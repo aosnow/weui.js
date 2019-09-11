@@ -54,20 +54,21 @@ import dialog from '../dialog/dialog';
  * });
  */
 function alert(content = '', yes = $.noop, options) {
-    if (typeof yes === 'object') {
-        options = yes;
-        yes = $.noop;
-    }
+  if (typeof yes === 'object') {
+    options = yes;
+    yes = $.noop;
+  }
 
-    options = $.extend({
-        content: content,
-        buttons: [{
-            label: '确定',
-            type: 'primary',
-            onClick: yes
-        }]
-    }, options);
+  options = $.extend({
+    content: content,
+    buttons: [{
+      label: '确定',
+      type: 'primary',
+      onClick: yes
+    }]
+  }, options);
 
-    return dialog(options);
+  return dialog(options);
 }
+
 export default alert;

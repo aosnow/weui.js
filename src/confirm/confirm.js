@@ -51,27 +51,29 @@ import dialog from '../dialog/dialog';
  * });
  */
 function confirm(content = '', yes = $.noop, no = $.noop, options) {
-    if(typeof yes === 'object'){
-        options = yes;
-        yes = $.noop;
-    }else if(typeof no === 'object'){
-        options = no;
-        no = $.noop;
-    }
+  if (typeof yes === 'object') {
+    options = yes;
+    yes = $.noop;
+  }
+  else if (typeof no === 'object') {
+    options = no;
+    no = $.noop;
+  }
 
-    options = $.extend({
-        content: content,
-        buttons: [{
-            label: '取消',
-            type: 'default',
-            onClick: no
-        }, {
-            label: '确定',
-            type: 'primary',
-            onClick: yes
-        }]
-    }, options);
+  options = $.extend({
+    content: content,
+    buttons: [{
+      label: '取消',
+      type: 'default',
+      onClick: no
+    }, {
+      label: '确定',
+      type: 'primary',
+      onClick: yes
+    }]
+  }, options);
 
-    return dialog(options);
+  return dialog(options);
 }
+
 export default confirm;

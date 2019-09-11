@@ -36,7 +36,7 @@ let _toptips = null;
  *     className: 'custom-classname',
  *     callback: function(){ console.log('close') }
  * });
- * 
+ *
  * // 主动关闭
  * var $topTips = weui.topTips('请填写正确的字段');
  * $topTips.hide(function() {
@@ -44,48 +44,53 @@ let _toptips = null;
  * });
  */
 function topTips(content, options = {}) {
-    if (typeof options === 'number') {
-        options = {
-            duration: options
-        };
-    }
-
-    if (typeof options === 'function') {
-        options = {
-            callback: options
-        };
-    }
-
-    options = $.extend({
-        content: content,
-        duration: 3000,
-        callback: $.noop,
-        className: ''
-    }, options);
-
-    const $topTips = $($.render(tpl, options));
-    function _hide(callback){
-        _hide = $.noop; // 防止二次调用导致报错
-
-        $topTips.remove();
-        callback && callback();
-        options.callback();
-        _toptips = null;
-    }
-    function hide(callback){ _hide(callback); }
-
-    $('body').append($topTips);
-    if(_toptips){
-        clearTimeout(_toptips.timeout);
-        _toptips.hide();
-    }
-
-    _toptips = {
-        hide: hide
+  if (typeof options === 'number') {
+    options = {
+      duration: options
     };
-    _toptips.timeout = setTimeout(hide, options.duration);
+  }
 
-    $topTips[0].hide = hide;
-    return $topTips[0];
+  if (typeof options === 'function') {
+    options = {
+      callback: options
+    };
+  }
+
+  options = $.extend({
+    content: content,
+    duration: 3000,
+    callback: $.noop,
+    className: ''
+  }, options);
+
+  const $topTips = $($.render(tpl, options));
+
+  function _hide(callback) {
+    _hide = $.noop; // 防止二次调用导致报错
+
+    $topTips.remove();
+    callback && callback();
+    options.callback();
+    _toptips = null;
+  }
+
+  function hide(callback) {
+    _hide(callback);
+  }
+
+  $('body').append($topTips);
+  if (_toptips) {
+    clearTimeout(_toptips.timeout);
+    _toptips.hide();
+  }
+
+  _toptips = {
+    hide: hide
+  };
+  _toptips.timeout = setTimeout(hide, options.duration);
+
+  $topTips[0].hide = hide;
+  return $topTips[0];
 }
+
 export default topTips;

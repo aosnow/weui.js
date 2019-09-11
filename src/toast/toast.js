@@ -36,46 +36,47 @@ let _sington;
  * });
  */
 function toast(content = '', options = {}) {
-    if(_sington) return _sington;
+  if (_sington) return _sington;
 
-    if (typeof options === 'number') {
-        options = {
-            duration: options
-        };
-    }
-    if (typeof options === 'function') {
-        options = {
-            callback: options
-        };
-    }
+  if (typeof options === 'number') {
+    options = {
+      duration: options
+    };
+  }
+  if (typeof options === 'function') {
+    options = {
+      callback: options
+    };
+  }
 
-    options = $.extend({
-        content: content,
-        duration: 3000,
-        callback: $.noop,
-        className: ''
-    }, options);
+  options = $.extend({
+    content: content,
+    duration: 3000,
+    callback: $.noop,
+    className: ''
+  }, options);
 
-    const $toastWrap = $($.render(tpl, options));
-    const $toast = $toastWrap.find('.weui-toast');
-    const $mask = $toastWrap.find('.weui-mask');
+  const $toastWrap = $($.render(tpl, options));
+  const $toast = $toastWrap.find('.weui-toast');
+  const $mask = $toastWrap.find('.weui-mask');
 
-    $('body').append($toastWrap);
-    $toast.addClass('weui-animate-fade-in');
-    $mask.addClass('weui-animate-fade-in');
+  $('body').append($toastWrap);
+  $toast.addClass('weui-animate-fade-in');
+  $mask.addClass('weui-animate-fade-in');
 
-    setTimeout(() => {
-        $mask.addClass('weui-animate-fade-out');
-        $toast
-            .addClass('weui-animate-fade-out')
-            .on('animationend webkitAnimationEnd', function () {
-                $toastWrap.remove();
-                _sington = false;
-                options.callback();
-            });
-    }, options.duration);
+  setTimeout(() => {
+    $mask.addClass('weui-animate-fade-out');
+    $toast
+    .addClass('weui-animate-fade-out')
+    .on('animationend webkitAnimationEnd', function() {
+      $toastWrap.remove();
+      _sington = false;
+      options.callback();
+    });
+  }, options.duration);
 
-    _sington = $toastWrap[0];
-    return $toastWrap[0];
+  _sington = $toastWrap[0];
+  return $toastWrap[0];
 }
+
 export default toast;

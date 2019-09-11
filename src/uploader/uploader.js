@@ -1,13 +1,13 @@
 /*
 * Tencent is pleased to support the open source community by making WeUI.js available.
-* 
+*
 * Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
-* 
+*
 * Licensed under the MIT License (the "License"); you may not use this file except in compliance
 * with the License. You may obtain a copy of the License at
-* 
+*
 *       http://opensource.org/licenses/MIT
-* 
+*
 * Unless required by applicable law or agreed to in writing, software distributed under the License is
 * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 * either express or implied. See the License for the specific language governing permissions and
@@ -16,7 +16,7 @@
 
 import $ from '../util/util';
 import tplItem from './item.html';
-import {compress} from './image';
+import { compress } from './image';
 import upload from './upload';
 
 let _id = 0;
@@ -44,22 +44,22 @@ let _id = 0;
  * #### html
  * ```html
  <div class="weui-cells weui-cells_form" id="uploader">
-     <div class="weui-cell">
-         <div class="weui-cell__bd">
-             <div class="weui-uploader">
-                 <div class="weui-uploader__hd">
-                     <p class="weui-uploader__title">图片上传</p>
-                     <div class="weui-uploader__info"><span id="uploadCount">0</span>/5</div>
-                 </div>
-                 <div class="weui-uploader__bd">
-                     <ul class="weui-uploader__files" id="uploaderFiles"></ul>
-                     <div class="weui-uploader__input-box">
-                         <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
+ <div class="weui-cell">
+ <div class="weui-cell__bd">
+ <div class="weui-uploader">
+ <div class="weui-uploader__hd">
+ <p class="weui-uploader__title">图片上传</p>
+ <div class="weui-uploader__info"><span id="uploadCount">0</span>/5</div>
+ </div>
+ <div class="weui-uploader__bd">
+ <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+ <div class="weui-uploader__input-box">
+ <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
  </div>
  * ```
  *
@@ -134,165 +134,167 @@ let _id = 0;
  * ```
  */
 function uploader(selector, options) {
-    const $uploader = $(selector);
-    const URL = window.URL || window.webkitURL || window.mozURL;
+  const $uploader = $(selector);
+  const URL = window.URL || window.webkitURL || window.mozURL;
 
-    // 找到DOM里file-content，若无，则插入一个。
-    function findFileCtn($uploader, id){
-        const $file = $uploader.find('[data-id="' + id + '"]');
-        let $fileCtn = $file.find('.weui-uploader__file-content');
+  // 找到DOM里file-content，若无，则插入一个。
+  function findFileCtn($uploader, id) {
+    const $file = $uploader.find('[data-id="' + id + '"]');
+    let $fileCtn = $file.find('.weui-uploader__file-content');
 
-        if(!$fileCtn.length){
-            $fileCtn = $('<div class="weui-uploader__file-content"></div>');
-            $file.append($fileCtn);
+    if (!$fileCtn.length) {
+      $fileCtn = $('<div class="weui-uploader__file-content"></div>');
+      $file.append($fileCtn);
+    }
+    $file.addClass('weui-uploader__file_status');
+    return $fileCtn;
+  }
+
+  // 清除DOM里的上传状态
+  function clearFileStatus($uploader, id) {
+    const $file = $uploader.find('[data-id="' + id + '"]').removeClass('weui-uploader__file_status');
+    $file.find('.weui-uploader__file-content').remove();
+  }
+
+  // 设置上传
+  function setUploadFile(file) {
+    file.url = URL.createObjectURL(file);
+    file.status = 'ready';
+    file.upload = function() {
+      upload($.extend({
+        $uploader: $uploader,
+        file: file
+      }, options));
+    };
+    file.stop = function() {
+      this.xhr.abort();
+    };
+
+    options.onQueued(file);
+    if (options.auto) file.upload();
+  }
+
+  options = $.extend({
+    url: '',
+    auto: true,
+    type: 'file',
+    fileVal: 'file',
+    xhrFields: {},
+    onBeforeQueued: $.noop,
+    onQueued: $.noop,
+    onBeforeSend: $.noop,
+    onSuccess: $.noop,
+    onProgress: $.noop,
+    onError: $.noop
+  }, options);
+
+  if (options.compress !== false) {
+    options.compress = $.extend({
+      width: 1600,
+      height: 1600,
+      quality: .8
+    }, options.compress);
+  }
+
+  if (options.onBeforeQueued) {
+    const onBeforeQueued = options.onBeforeQueued;
+    options.onBeforeQueued = function(file, files) {
+      const ret = onBeforeQueued.call(file, files);
+      if (ret === false) {
+        return false;
+      }
+      if (ret === true) {
+        return;
+      }
+
+      const $item = $($.render(tplItem, {
+        id: file.id
+      }));
+      $uploader.find('.weui-uploader__files').append($item);
+    };
+  }
+  if (options.onQueued) {
+    const onQueued = options.onQueued;
+    options.onQueued = function(file) {
+      if (!onQueued.call(file)) {
+        const $file = $uploader.find('[data-id="' + file.id + '"]');
+        $file.css({
+          backgroundImage: 'url("' + (file.base64 || file.url) + '")'
+        });
+        if (!options.auto) {
+          clearFileStatus($uploader, file.id);
         }
-        $file.addClass('weui-uploader__file_status');
-        return $fileCtn;
+      }
+    };
+  }
+  if (options.onBeforeSend) {
+    const onBeforeSend = options.onBeforeSend;
+    options.onBeforeSend = function(file, data, headers) {
+      const ret = onBeforeSend.call(file, data, headers);
+      if (ret === false) {
+        return false;
+      }
+    };
+  }
+  if (options.onSuccess) {
+    const onSuccess = options.onSuccess;
+    options.onSuccess = function(file, ret) {
+      file.status = 'success';
+      if (!onSuccess.call(file, ret)) {
+        clearFileStatus($uploader, file.id);
+      }
+    };
+  }
+  if (options.onProgress) {
+    const onProgress = options.onProgress;
+    options.onProgress = function(file, percent) {
+      if (!onProgress.call(file, percent)) {
+        findFileCtn($uploader, file.id).html(percent + '%');
+      }
+    };
+  }
+  if (options.onError) {
+    const onError = options.onError;
+    options.onError = function(file, err) {
+      file.status = 'fail';
+      if (!onError.call(file, err)) {
+        findFileCtn($uploader, file.id).html('<i class="weui-icon-warn"></i>');
+      }
+    };
+  }
+
+  $uploader.find('input[type="file"]').on('change', function(evt) {
+    const files = evt.target.files;
+
+    if (files.length === 0) {
+      return;
     }
 
-    // 清除DOM里的上传状态
-    function clearFileStatus($uploader, id){
-        const $file = $uploader.find('[data-id="' + id + '"]').removeClass('weui-uploader__file_status');
-        $file.find('.weui-uploader__file-content').remove();
+    if (options.compress === false && options.type == 'file') {
+      // 以原文件方式上传
+      Array.prototype.forEach.call(files, (file) => {
+        file.id = ++_id;
+
+        if (options.onBeforeQueued(file, files) === false) return;
+
+        setUploadFile(file);
+      });
+    }
+    else {
+      // base64上传 和 压缩上传
+      Array.prototype.forEach.call(files, (file) => {
+        file.id = ++_id;
+
+        if (options.onBeforeQueued(file, files) === false) return;
+
+        compress(file, options, function(blob) {
+          if (blob) setUploadFile(blob);
+        });
+      });
     }
 
-    // 设置上传
-    function setUploadFile(file) {
-        file.url = URL.createObjectURL(file);
-        file.status = 'ready';
-        file.upload = function () {
-            upload($.extend({
-                $uploader: $uploader,
-                file: file
-            }, options));
-        };
-        file.stop = function(){
-            this.xhr.abort();
-        };
-
-        options.onQueued(file);
-        if(options.auto) file.upload();
-    }
-
-    options = $.extend({
-        url: '',
-        auto: true,
-        type: 'file',
-        fileVal: 'file',
-        xhrFields: {},
-        onBeforeQueued: $.noop,
-        onQueued: $.noop,
-        onBeforeSend: $.noop,
-        onSuccess: $.noop,
-        onProgress: $.noop,
-        onError: $.noop
-    }, options);
-
-    if(options.compress !== false){
-        options.compress = $.extend({
-            width: 1600,
-            height: 1600,
-            quality: .8
-        }, options.compress);
-    }
-
-    if(options.onBeforeQueued){
-        const onBeforeQueued = options.onBeforeQueued;
-        options.onBeforeQueued = function(file, files){
-            const ret = onBeforeQueued.call(file, files);
-            if(ret === false){
-                return false;
-            }
-            if(ret === true){
-                return;
-            }
-
-            const $item = $($.render(tplItem, {
-                id: file.id
-            }));
-            $uploader.find('.weui-uploader__files').append($item);
-        };
-    }
-    if(options.onQueued){
-        const onQueued = options.onQueued;
-        options.onQueued = function(file){
-            if(!onQueued.call(file)){
-                const $file = $uploader.find('[data-id="' + file.id + '"]');
-                $file.css({
-                    backgroundImage: 'url("' + (file.base64 || file.url) + '")'
-                });
-                if(!options.auto) {
-                    clearFileStatus($uploader, file.id);
-                }
-            }
-        };
-    }
-    if(options.onBeforeSend){
-        const onBeforeSend = options.onBeforeSend;
-        options.onBeforeSend = function(file, data, headers){
-            const ret = onBeforeSend.call(file, data, headers);
-            if(ret === false){
-                return false;
-            }
-        };
-    }
-    if(options.onSuccess){
-        const onSuccess = options.onSuccess;
-        options.onSuccess = function(file, ret){
-            file.status = 'success';
-            if(!onSuccess.call(file, ret)){
-                clearFileStatus($uploader, file.id);
-            }
-        };
-    }
-    if(options.onProgress){
-        const onProgress = options.onProgress;
-        options.onProgress = function(file, percent){
-            if(!onProgress.call(file, percent)){
-                findFileCtn($uploader, file.id).html(percent + '%');
-            }
-        };
-    }
-    if(options.onError){
-        const onError = options.onError;
-        options.onError = function(file, err){
-            file.status = 'fail';
-            if(!onError.call(file, err)){
-                findFileCtn($uploader, file.id).html('<i class="weui-icon-warn"></i>');
-            }
-        };
-    }
-
-    $uploader.find('input[type="file"]').on('change', function (evt) {
-        const files = evt.target.files;
-
-        if (files.length === 0) {
-            return;
-        }
-
-        if(options.compress === false && options.type == 'file'){
-            // 以原文件方式上传
-            Array.prototype.forEach.call(files, (file) => {
-                file.id = ++_id;
-
-                if(options.onBeforeQueued(file, files) === false) return;
-
-                setUploadFile(file);
-            });
-        }else{
-            // base64上传 和 压缩上传
-            Array.prototype.forEach.call(files, (file) => {
-                file.id = ++_id;
-
-                if(options.onBeforeQueued(file, files) === false) return;
-
-                compress(file, options, function(blob){
-                    if(blob) setUploadFile(blob);
-                });
-            });
-        }
-
-        this.value = '';
-    });
+    this.value = '';
+  });
 }
+
 export default uploader;

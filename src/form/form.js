@@ -17,75 +17,84 @@
 import $ from '../util/util';
 import topTips from '../topTips/topTips';
 
-function _findCellParent(ele){
-    if(!ele || !ele.classList) return null;
-    if(ele.classList.contains('weui-cell')) return ele;
-    return _findCellParent(ele.parentNode);
+function _findCellParent(ele) {
+  if (!ele || !ele.classList) return null;
+  if (ele.classList.contains('weui-cell')) return ele;
+  return _findCellParent(ele.parentNode);
 }
-function _validate($input, $form, regexp){
-    const input = $input[0], val = $input.val();
 
-    if(input.tagName == 'INPUT' || input.tagName == 'TEXTAREA'){
-        let reg = input.getAttribute('pattern') || '';
+function _validate($input, $form, regexp) {
+  const input = $input[0], val = $input.val();
 
-        if(input.type == 'radio') {
-            const radioInputs = $form.find('input[type="radio"][name="' + input.name + '"]');
-            for (let i = 0, len = radioInputs.length; i < len; ++i) {
-                if(radioInputs[i].checked) return null;
-            }
-            return 'empty';
-        }else if(input.type == 'checkbox'){
-            if(reg){
-                const checkboxInputs = $form.find('input[type="checkbox"][name="' + input.name + '"]');
-                const regs = reg.replace(/[{\s}]/g, '').split(',');
-                let count = 0;
+  if (input.tagName == 'INPUT' || input.tagName == 'TEXTAREA') {
+    let reg = input.getAttribute('pattern') || '';
 
-                if(regs.length != 2){
-                    throw input.outerHTML + ' regexp is wrong.';
-                }
+    if (input.type == 'radio') {
+      const radioInputs = $form.find('input[type="radio"][name="' + input.name + '"]');
+      for (let i = 0, len = radioInputs.length; i < len; ++i) {
+        if (radioInputs[i].checked) return null;
+      }
+      return 'empty';
+    }
+    else if (input.type == 'checkbox') {
+      if (reg) {
+        const checkboxInputs = $form.find('input[type="checkbox"][name="' + input.name + '"]');
+        const regs = reg.replace(/[{\s}]/g, '').split(',');
+        let count = 0;
 
-                checkboxInputs.forEach((checkboxInput) => {
-                    if(checkboxInput.checked) ++count;
-                });
-
-                if(regs[1] === ''){ // {0,}
-                    if(count >= parseInt(regs[0])){
-                        return null;
-                    }else{
-                        return count == 0 ? 'empty' : 'notMatch';
-                    }
-                }else{ // {0,2}
-                    if(parseInt(regs[0]) <= count && count <= parseInt(regs[1])){
-                        return null;
-                    }else{
-                        return count == 0 ? 'empty' : 'notMatch';
-                    }
-                }
-            }else{
-                return input.checked ? null : 'empty';
-            }
-        }else if(reg){
-            if(/^REG_/.test(reg)){
-                if(!regexp) throw 'RegExp ' + reg + ' is empty.';
-
-                reg = reg.replace(/^REG_/, '');
-                if(!regexp[reg]) throw 'RegExp ' + reg + ' has not found.';
-
-                reg = regexp[reg];
-            }
-            return new RegExp(reg).test(val) ? null : !$input.val().length ? 'empty' : 'notMatch';
-        }else if(!$input.val().length){
-            return 'empty';
-        }else{
-            return null;
+        if (regs.length != 2) {
+          throw input.outerHTML + ' regexp is wrong.';
         }
-    }
-    else if(val.length){
-        // 有输入值
-        return null;
-    }
 
-    return 'empty';
+        checkboxInputs.forEach((checkboxInput) => {
+          if (checkboxInput.checked) ++count;
+        });
+
+        if (regs[1] === '') { // {0,}
+          if (count >= parseInt(regs[0])) {
+            return null;
+          }
+          else {
+            return count == 0 ? 'empty' : 'notMatch';
+          }
+        }
+        else { // {0,2}
+          if (parseInt(regs[0]) <= count && count <= parseInt(regs[1])) {
+            return null;
+          }
+          else {
+            return count == 0 ? 'empty' : 'notMatch';
+          }
+        }
+      }
+      else {
+        return input.checked ? null : 'empty';
+      }
+    }
+    else if (reg) {
+      if (/^REG_/.test(reg)) {
+        if (!regexp) throw 'RegExp ' + reg + ' is empty.';
+
+        reg = reg.replace(/^REG_/, '');
+        if (!regexp[reg]) throw 'RegExp ' + reg + ' has not found.';
+
+        reg = regexp[reg];
+      }
+      return new RegExp(reg).test(val) ? null : !$input.val().length ? 'empty' : 'notMatch';
+    }
+    else if (!$input.val().length) {
+      return 'empty';
+    }
+    else {
+      return null;
+    }
+  }
+  else if (val.length) {
+    // 有输入值
+    return null;
+  }
+
+  return 'empty';
 }
 
 /**
@@ -147,25 +156,25 @@ function _validate($input, $form, regexp){
  * });
  * ```
  */
-function validate(selector, callback = $.noop, options = {}){
-    const $eles = $(selector);
+function validate(selector, callback = $.noop, options = {}) {
+  const $eles = $(selector);
 
-    $eles.forEach((ele) => {
-        const $form = $(ele);
-        const $requireds = $form.find('[required]');
-        if(typeof callback != 'function') callback = showErrorTips;
+  $eles.forEach((ele) => {
+    const $form = $(ele);
+    const $requireds = $form.find('[required]');
+    if (typeof callback != 'function') callback = showErrorTips;
 
-        for(let i = 0, len = $requireds.length; i < len; ++i){
-            const $required = $requireds.eq(i), errorMsg = _validate($required, $form, options.regexp), error = {ele: $required[0], msg: errorMsg};
-            if(errorMsg){
-                if(!callback(error)) showErrorTips(error);
-                return;
-            }
-        }
-        callback(null);
-    });
+    for (let i = 0, len = $requireds.length; i < len; ++i) {
+      const $required = $requireds.eq(i), errorMsg = _validate($required, $form, options.regexp), error = { ele: $required[0], msg: errorMsg };
+      if (errorMsg) {
+        if (!callback(error)) showErrorTips(error);
+        return;
+      }
+    }
+    callback(null);
+  });
 
-    return this;
+  return this;
 }
 
 /**
@@ -182,33 +191,33 @@ function validate(selector, callback = $.noop, options = {}){
  *     }
  * });
  */
-function checkIfBlur(selector, options = {}){
-    const $eles = $(selector);
+function checkIfBlur(selector, options = {}) {
+  const $eles = $(selector);
 
-    $eles.forEach((ele) => {
-        const $form = $(ele);
-        $form.find('[required]')
-            .on('blur', function () {
-                // checkbox 和 radio 不做blur检测，以免误触发
-                if(this.type == 'checkbox' || this.type == 'radio') return;
+  $eles.forEach((ele) => {
+    const $form = $(ele);
+    $form.find('[required]')
+         .on('blur', function() {
+           // checkbox 和 radio 不做blur检测，以免误触发
+           if (this.type == 'checkbox' || this.type == 'radio') return;
 
-                const $this = $(this);
-                if($this.val().length < 1) return; // 当空的时候不校验，以防不断弹出toptips
+           const $this = $(this);
+           if ($this.val().length < 1) return; // 当空的时候不校验，以防不断弹出toptips
 
-                let errorMsg = _validate($this, $form, options.regexp);
-                if(errorMsg){
-                    showErrorTips({
-                        ele: $this[0],
-                        msg: errorMsg
-                    });
-                }
-            })
-            .on('focus', function () {
-                hideErrorTips(this);
-            });
-    });
+           let errorMsg = _validate($this, $form, options.regexp);
+           if (errorMsg) {
+             showErrorTips({
+               ele: $this[0],
+               msg: errorMsg
+             });
+           }
+         })
+         .on('focus', function() {
+           hideErrorTips(this);
+         });
+  });
 
-    return this;
+  return this;
 }
 
 /**
@@ -223,17 +232,17 @@ function checkIfBlur(selector, options = {}){
  *     msg: 'empty'
  * });
  */
-function showErrorTips(error){
-    if(error){
-        const $ele = $(error.ele), msg = error.msg,
-            tips = $ele.attr(msg + 'Tips') || $ele.attr('tips') || $ele.attr('placeholder');
-        if(tips) topTips(tips);
+function showErrorTips(error) {
+  if (error) {
+    const $ele = $(error.ele), msg = error.msg,
+      tips = $ele.attr(msg + 'Tips') || $ele.attr('tips') || $ele.attr('placeholder');
+    if (tips) topTips(tips);
 
-        if(error.ele.type == 'checkbox' || error.ele.type == 'radio') return;
+    if (error.ele.type == 'checkbox' || error.ele.type == 'radio') return;
 
-        const cellParent = _findCellParent(error.ele);
-        if(cellParent) cellParent.classList.add('weui-cell_warn');
-    }
+    const cellParent = _findCellParent(error.ele);
+    if (cellParent) cellParent.classList.add('weui-cell_warn');
+  }
 }
 
 /**
@@ -243,14 +252,14 @@ function showErrorTips(error){
  * @example
  * weui.form.hideErrorTips(document.getElementById("xxxInput"));
  */
-function hideErrorTips(ele){
-    const cellParent = _findCellParent(ele);
-    if(cellParent) cellParent.classList.remove('weui-cell_warn');
+function hideErrorTips(ele) {
+  const cellParent = _findCellParent(ele);
+  if (cellParent) cellParent.classList.remove('weui-cell_warn');
 }
 
 export default {
-    showErrorTips,
-    hideErrorTips,
-    validate,
-    checkIfBlur
+  showErrorTips,
+  hideErrorTips,
+  validate,
+  checkIfBlur
 };

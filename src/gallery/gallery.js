@@ -38,40 +38,46 @@ let _sington;
  * });
  */
 function gallery(url, options = {}) {
-    if(_sington) return _sington;
+  if (_sington) return _sington;
 
-    options = $.extend({
-        className: '',
-        onDelete: $.noop
-    }, options);
+  options = $.extend({
+    className: '',
+    onDelete: $.noop
+  }, options);
 
-    const $gallery = $($.render(tpl, $.extend({
-        url: url
-    }, options)));
+  const $gallery = $($.render(tpl, $.extend({
+    url: url
+  }, options)));
 
-    function _hide(callback){
-        _hide = $.noop; // 防止二次调用导致报错
+  function _hide(callback) {
+    _hide = $.noop; // 防止二次调用导致报错
 
-        $gallery
-            .addClass('weui-animate-fade-out')
-            .on('animationend webkitAnimationEnd', function () {
-                $gallery.remove();
-                _sington = false;
-                callback && callback();
-            });
-    }
-    function hide(callback){ _hide(callback); }
-
-    $('body').append($gallery);
-    $gallery.find('.weui-gallery__img').on('click', function () { hide(); });
-    $gallery.find('.weui-gallery__del').on('click', function () {
-        options.onDelete.call(this, url);
+    $gallery
+    .addClass('weui-animate-fade-out')
+    .on('animationend webkitAnimationEnd', function() {
+      $gallery.remove();
+      _sington = false;
+      callback && callback();
     });
+  }
 
-    $gallery.show().addClass('weui-animate-fade-in');
+  function hide(callback) {
+    _hide(callback);
+  }
 
-    _sington = $gallery[0];
-    _sington.hide = hide;
-    return _sington;
+  $('body').append($gallery);
+  $gallery.find('.weui-gallery__img').on('click', function() {
+    hide();
+  });
+  $gallery.find('.weui-gallery__del').on('click', function() {
+    options.onDelete.call(this, url);
+  });
+
+  $gallery.show().addClass('weui-animate-fade-in');
+
+  _sington = $gallery[0];
+  _sington.hide = hide;
+  return _sington;
 }
+
 export default gallery;

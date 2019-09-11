@@ -53,33 +53,34 @@ import $ from '../util/util';
  * ```
  */
 function tab(selector, options = {}) {
-    const $eles = $(selector);
-    options = $.extend({
-        defaultIndex: 0,
-        onChange: $.noop
-    }, options);
+  const $eles = $(selector);
+  options = $.extend({
+    defaultIndex: 0,
+    onChange: $.noop
+  }, options);
 
-    $eles.forEach((ele) => {
-        const $tab = $(ele);
-        const $tabItems = $tab.find('.weui-navbar__item, .weui-tabbar__item');
-        const $tabContents = $tab.find('.weui-tab__content');
+  $eles.forEach((ele) => {
+    const $tab = $(ele);
+    const $tabItems = $tab.find('.weui-navbar__item, .weui-tabbar__item');
+    const $tabContents = $tab.find('.weui-tab__content');
 
-        $tabItems.eq(options.defaultIndex).addClass('weui-bar__item_on');
-        $tabContents.eq(options.defaultIndex).show();
+    $tabItems.eq(options.defaultIndex).addClass('weui-bar__item_on');
+    $tabContents.eq(options.defaultIndex).show();
 
-        $tabItems.on('click', function () {
-            const $this = $(this), index = $this.index();
+    $tabItems.on('click', function() {
+      const $this = $(this), index = $this.index();
 
-            $tabItems.removeClass('weui-bar__item_on');
-            $this.addClass('weui-bar__item_on');
+      $tabItems.removeClass('weui-bar__item_on');
+      $this.addClass('weui-bar__item_on');
 
-            $tabContents.hide();
-            $tabContents.eq(index).show();
+      $tabContents.hide();
+      $tabContents.eq(index).show();
 
-            options.onChange.call(this, index);
-        });
+      options.onChange.call(this, index);
     });
+  });
 
-    return this;
+  return this;
 }
+
 export default tab;

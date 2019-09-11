@@ -1,10 +1,10 @@
 {
-  "name": "weui.js",
-  "version": "1.2.1",
+  "name": "@mudas/weui.js",
+  "version": "0.0.1",
   "description": "weui.js",
   "main": "./dist/weui.min.js",
   "scripts": {
-    "start": "webpack-dev-server --config ./build/webpack.example.config.js --content-base dist/example --progress --colors --host 0.0.0.0 --port 8001",
+    "start": "webpack-dev-server --config ./build/webpack.example.config.js --content-base dist/example --progress --colors",
     "build": "npm run clean && npm run lint && webpack --config ./build/webpack.example.config.js && node build/build.js",
     "docs": "node ./build/docs.js",
     "deploy": "npm run docs && gh-pages -d docs/_book",
@@ -18,8 +18,15 @@
     "javascript",
     "zepto"
   ],
-  "homepage": "https://weui.io",
-  "author": "wechat ui team",
+  "homepage": "https://github.com/aosnow/weui.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aosnow/weui.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aosnow/weui.js/issues"
+  },
+  "author": "mudas",
   "license": "MIT",
   "dependencies": {
     "balajs": "^0.1.9",
