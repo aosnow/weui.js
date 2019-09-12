@@ -2,5 +2,7 @@
 .idea/
 node_modules/
 *.log
-/docs/_book/
+/docs/
+/dist/
 uploader-server/uploads
+
