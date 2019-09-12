@@ -1,53 +1,30 @@
 const path = require('path');
-const pkg = require('../package.json');
 const webpack = require('webpack');
+const utils = require('./utils');
+const pkg = require('../package.json');
+const BaseConfig = require('./webpack.example.config');
 
-module.exports = function (entry, isMinify) {
-    const plugins = [
-        new webpack.DefinePlugin({
-            NODE_ENV: '"production"',
-            'process.env.NODE_ENV': '"production"'
-        }),
-        new webpack.BannerPlugin([
-            pkg.name + ' v' + pkg.version + ' (' + pkg.homepage + ')',
-            'Copyright ' + new Date().getFullYear() + ', ' + pkg.author,
-            pkg.license + ' license'
-        ].join('\n'))
-    ];
-    if(isMinify){
-        plugins.push(
-            new webpack.optimize.UglifyJsPlugin({
-                compress: {
-                    warnings: false,
-                    drop_console: true
-                }
-            }));
-    }
+module.exports = function(entry, minimize, noHtml = false) {
+  BaseConfig.plugins.push(
+    new webpack.BannerPlugin([
+      pkg.name + ' v' + pkg.version + ' (' + pkg.homepage + ')',
+      'Copyright ' + new Date().getFullYear() + ', ' + pkg.author,
+      pkg.license + ' license'
+    ].join('\n'))
+  );
 
-    return {
-        context: path.join(__dirname, '../src'),
-        entry: entry,
-        output: {
-            path: path.join(__dirname, '../dist'),
-            filename: isMinify ? '[name].min.js' : '[name].js',
-            library: 'weui',
-            libraryTarget: 'umd',
-            umdNameDefine: true
-        },
-        module: {
-            loaders: [
-                {
-                    test: /\.js?$/,
-                    exclude: /node_modules/,
-                    loader: 'babel'
-                },
-                {
-                    test: /\.html$/,
-                    exclude: /node_modules/,
-                    loader: 'html?minimize'
-                }
-            ]
-        },
-        plugins: plugins
-    };
+  // 构建 js 库时不需要构建 html 页面
+  noHtml && BaseConfig.plugins.splice(1, 1);
+
+  BaseConfig.optimization.minimize = !!minimize;
+  BaseConfig.context = utils.resolve('src');
+  BaseConfig.entry = entry;
+  BaseConfig.output = {
+    path: utils.resolve('dist'),
+    filename: minimize ? '[name].min.js' : '[name].js',
+    library: 'weui',
+    libraryTarget: 'umd'
+  };
+
+  return BaseConfig;
 };

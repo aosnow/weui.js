@@ -1,36 +1,35 @@
-weui.js
+@mudas/weui.js
 =====
 
-[![npm version](https://img.shields.io/npm/v/weui.js.svg)](https://www.npmjs.org/package/weui.js/)
+[![npm version](https://img.shields.io/npm/v/@mudas/weui.js.svg)](https://www.npmjs.org/package/@mudas/weui.js/)
 
 
 ### 概述
 
-[WeUI](https://github.com/Tencent/weui.git) 的轻量级 js 封装。
+[WeUI](https://github.com/aosnow/weui.git) 的轻量级 js 改版库（基于 `zepto v1.2.0`）。
 
-注意：由于微信小程序不支持dom操作，所以weui.js并不适用于小程序。不过WeUI也为小程序开发了另外的版本，详情请看：https://github.com/Tencent/weui-wxss/
+该 `@mudas/weui.js` 源于 `weui.js`，进行大量修改、优化、升级、加入新组件，转换大量老旧 `JS` 语法到 `ES6`，另外对 `webpack` 等构建配置升级到 `webpack v4.39.x`，若想使用原版请查看：https://github.com/Tencent/weui.js
 
-### 手机预览
+### 计划
+- 使用 scss 语法全部替换 less，增强 css 预处理能力
+- 增加新组件：半屏弹框，侧滑弹框等等
+- 使用 zepto 替代内部 balajs 库，并转换到外部依赖，由用户自行控制
 
-![https://weui.io](https://cloud.githubusercontent.com/assets/2395166/20742697/96705822-b70c-11e6-9486-c03a5939a1d6.png)
 
-[https://weui.io/weui.js/](https://weui.io/weui.js/)
+### 二次开发
 
+#### 安装
 
-### 开发
-
-安装
-
-```shell
-git clone https://github.com/Tencent/weui.js.git
+```npm
+git clone https://github.com/aosnow/weui.js.git
 cd weui.js
 npm install
 npm start
 ```
 
-编译
+#### 编译
 
-```shell
+```npm
 npm run build
 ```
 
@@ -41,7 +40,7 @@ npm run build
 
 ```html
 <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.1/weui.min.css">
-<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.2.1/weui.min.js"></script>
+<script type="text/javascript" src="weui.min.js"></script>
 <script type="text/javascript">
     weui.alert('alert');
 </script>
@@ -50,15 +49,14 @@ npm run build
 #### import as module
 
 ```javascript
-import 'weui';
-import weui from 'weui.js';
+import weui from '@mudas/weui.js';
 
 weui.alert('alert');
 ```
 
 ### 文档
 
-[Documents](https://github.com/Tencent/weui.js/tree/master/docs/README.md)
+[Documents](https://aosnow.github.io/weui.js/)
 
 ### 贡献
 

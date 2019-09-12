@@ -1,13 +1,13 @@
 /*
 * Tencent is pleased to support the open source community by making WeUI.js available.
-* 
+*
 * Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
-* 
+*
 * Licensed under the MIT License (the "License"); you may not use this file except in compliance
 * with the License. You may obtain a copy of the License at
-* 
+*
 *       http://opensource.org/licenses/MIT
-* 
+*
 * Unless required by applicable law or agreed to in writing, software distributed under the License is
 * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 * either express or implied. See the License for the specific language governing permissions and
@@ -15,26 +15,27 @@
 */
 
 import $ from '../util/util';
-import cron from './cron';
+import parse from './cron';
 import './scroll';
 import * as util from './util';
 import pickerTpl from './picker.html';
 import groupTpl from './group.html';
 
 function Result(item) {
-    if(typeof item != 'object'){
-        item = {
-            label: item,
-            value: item
-        };
-    }
-    $.extend(this, item);
+  if (typeof item !== 'object') {
+    item = {
+      label: item,
+      value: item
+    };
+  }
+  $.extend(this, item);
 }
-Result.prototype.toString = function () {
-    return this.value;
+
+Result.prototype.toString = function() {
+  return this.value;
 };
-Result.prototype.valueOf = function () {
-    return this.value;
+Result.prototype.valueOf = function() {
+  return this.value;
 };
 
 let _sington;
@@ -43,15 +44,15 @@ let temp = {}; // temp 存在上一次滑动的位置
 /**
  * picker 多列选择器。
  * @param {array} items picker的数据，即用于生成picker的数据，picker的层级可以自己定义，但建议最多三层。数据格式参考example。
- * @param {Object} options 配置项
- * @param {number=} [options.depth] picker深度(也就是picker有多少列) 取值为1-3。如果为空，则取items第一项的深度。
- * @param {string=} [options.id=default] 作为picker的唯一标识，作用是以id缓存当时的选择。（当你想每次传入的defaultValue都是不一样时，可以使用不同的id区分）
- * @param {string=} [options.className] 自定义类名
- * @param {string=} [options.container] 指定容器
- * @param {array=} [options.defaultValue] 默认选项的value数组
- * @param {function=} [options.onChange] 在picker选中的值发生变化的时候回调
- * @param {function=} [options.onConfirm] 在点击"确定"之后的回调。回调返回选中的结果(Array)，数组长度依赖于picker的层级。
- * @param {function=} [options.onClose] picker关闭后的回调
+ * @param {Object} args 配置项
+ * @param {number=} [args.depth] picker深度(也就是picker有多少列) 取值为1-3。如果为空，则取items第一项的深度。
+ * @param {string=} [args.id=default] 作为picker的唯一标识，作用是以id缓存当时的选择。（当你想每次传入的defaultValue都是不一样时，可以使用不同的id区分）
+ * @param {string=} [args.className] 自定义类名
+ * @param {string=} [args.container] 指定容器
+ * @param {array=} [args.defaultValue] 默认选项的value数组
+ * @param {function=} [args.onChange] 在picker选中的值发生变化的时候回调
+ * @param {function=} [args.onConfirm] 在点击"确定"之后的回调。回调返回选中的结果(Array)，数组长度依赖于picker的层级。
+ * @param {function=} [args.onClose] picker关闭后的回调
  *
  * @example
  * // 单列picker
@@ -184,166 +185,179 @@ let temp = {}; // temp 存在上一次滑动的位置
  *    id: 'doubleLinePicker'
  * });
  */
-function picker() {
-    if (_sington) return _sington;
+function picker(items, ...args) {
+  if (_sington) return _sington;
 
-    // 配置项
-    const options = arguments[arguments.length - 1];
-    const defaults = $.extend({
-        id: 'default',
-        className: '',
-        container: 'body',
-        title:'',
-        onChange: $.noop,
-        onConfirm: $.noop,
-        onClose: $.noop
-    }, options);
+  // 配置项
+  const options = args[args.length - 1];
+  const defaults = $.extend({
+    id: 'default',
+    className: '',
+    container: 'body',
+    title: '',
+    onChange: $.noop,
+    onConfirm: $.noop,
+    onClose: $.noop
+  }, options);
 
-    // 数据处理
-    let items;
-    let isMulti = false; // 是否多列的类型
-    if (arguments.length > 2) {
-        let i = 0;
-        items = [];
-        while (i < arguments.length - 1) {
-            items.push(arguments[i++]);
+  // 数据处理
+  let final = items;
+  let isMulti = false; // 是否多列的类型
+  if (args.length >= 2) {
+    let i = 0;
+    final = [items];
+    while (i < args.length - 1) {
+      final.push(args[i++]);
+    }
+    isMulti = true;
+  }
+
+  // 获取缓存
+  temp[defaults.id] = temp[defaults.id] || [];
+  const result = [];
+  const lineTemp = temp[defaults.id];
+  const $picker = $($.render(pickerTpl, defaults));
+  const depth = options.depth || (isMulti ? final.length : util.depthOf(final[0]));
+  let groups = '';
+
+  // 显示与隐藏的方法
+  function show() {
+    $(defaults.container).append($picker);
+
+    // 这里获取一下计算后的样式，强制触发渲染. fix IOS10下闪现的问题
+    $.getStyle($picker[0], 'transform');
+
+    // 更改标题
+    $picker.find('.weui-half-screen-dialog__title').html(defaults.title);
+    $picker.find('.weui-mask').addClass('weui-animate-fade-in');
+    $picker.find('.weui-picker').addClass('weui-animate-slide-up');
+  }
+
+  function _hide(callback) {
+    // _hide = $.noop; // 防止二次调用导致报错
+
+    $picker.find('.weui-mask').addClass('weui-animate-fade-out');
+    $picker.find('.weui-picker')
+           .addClass('weui-animate-slide-down')
+           .on('animationend webkitAnimationEnd', function() {
+             $picker.remove();
+             _sington = false;
+             defaults.onClose();
+             callback && callback();
+           });
+  }
+
+  function hide(callback) {
+    _hide(callback);
+  }
+
+  // 初始化滚动的方法
+  function scroll(items, level) {
+    if (lineTemp[level] === undefined && defaults.defaultValue && defaults.defaultValue[level] !== undefined) {
+      // 没有缓存选项，而且存在defaultValue
+      const defaultVal = defaults.defaultValue[level];
+      let index = 0;
+      let len = items.length;
+
+      if (typeof items[index] === 'object') {
+        for (; index < len; ++index) {
+          if (defaultVal === items[index].value) break;
         }
-        isMulti = true;
-    } else {
-        items = arguments[0];
+      }
+      else {
+        for (; index < len; ++index) {
+          if (defaultVal === items[index]) break;
+        }
+      }
+      if (index < len) {
+        lineTemp[level] = index;
+      }
+      else {
+        console.warn('Picker has not match defaultValue: ' + defaultVal);
+      }
     }
+    $picker.find('.weui-picker__group').eq(level).scroll({
+      items: items,
+      temp: lineTemp[level],
+      onChange: function(item, index) {
+        // 为当前的result赋值。
+        if (item) {
+          result[level] = new Result(item);
+        }
+        else {
+          result[level] = null;
+        }
+        lineTemp[level] = index;
 
-    // 获取缓存
-    temp[defaults.id] = temp[defaults.id] || [];
-    const result = [];
-    const lineTemp = temp[defaults.id];
-    const $picker = $($.render(pickerTpl, defaults));
-    let depth = options.depth || (isMulti ? items.length : util.depthOf(items[0])), groups = '';
-
-    // 显示与隐藏的方法
-    function show(){
-        $(defaults.container).append($picker);
-
-        // 这里获取一下计算后的样式，强制触发渲染. fix IOS10下闪现的问题
-        $.getStyle($picker[0], 'transform');
-
-        //更改标题
-        $picker.find('.weui-half-screen-dialog__title').html(defaults.title);
-        $picker.find('.weui-mask').addClass('weui-animate-fade-in');
-        $picker.find('.weui-picker').addClass('weui-animate-slide-up');
-    }
-    function _hide(callback){
-        _hide = $.noop; // 防止二次调用导致报错
-
-        $picker.find('.weui-mask').addClass('weui-animate-fade-out');
-        $picker.find('.weui-picker')
-            .addClass('weui-animate-slide-down')
-            .on('animationend webkitAnimationEnd', function () {
-                $picker.remove();
-                _sington = false;
-                defaults.onClose();
-                callback && callback();
+        if (isMulti) {
+          if (result.length === depth) {
+            defaults.onChange(result);
+          }
+        }
+        else {
+          /**
+           * @子列表处理
+           * 1. 在没有子列表，或者值列表的数组长度为0时，隐藏掉子列表。
+           * 2. 滑动之后发现重新有子列表时，再次显示子列表。
+           *
+           * @回调处理
+           * 1. 因为滑动实际上是一层一层传递的：父列表滚动完成之后，会call子列表的onChange，从而带动子列表的滑动。
+           * 2. 所以，使用者的传进来onChange回调应该在最后一个子列表滑动时再call
+           */
+          if (item.children && item.children.length > 0) {
+            $picker.find('.weui-picker__group').eq(level + 1).show();
+            !isMulti && scroll(item.children, level + 1); // 不是多列的情况下才继续处理children
+          }
+          else {
+            // 如果子列表test不通过，子孙列表都隐藏。
+            const $items = $picker.find('.weui-picker__group');
+            $items.forEach((ele, index) => {
+              if (index > level) {
+                $(ele).hide();
+              }
             });
-    }
-    function hide(callback){ _hide(callback); }
 
-    // 初始化滚动的方法
-    function scroll(items, level) {
-        if (lineTemp[level] === undefined && defaults.defaultValue && defaults.defaultValue[level] !== undefined) {
-            // 没有缓存选项，而且存在defaultValue
-            const defaultVal = defaults.defaultValue[level];
-            let index = 0, len = items.length;
+            result.splice(level + 1);
 
-            if(typeof items[index] == 'object'){
-                for (; index < len; ++index) {
-                    if (defaultVal == items[index].value) break;
-                }
-            }else{
-                for (; index < len; ++index) {
-                    if (defaultVal == items[index]) break;
-                }
-            }
-            if (index < len) {
-                lineTemp[level] = index;
-            } else {
-                console.warn('Picker has not match defaultValue: ' + defaultVal);
-            }
+            defaults.onChange(result);
+          }
         }
-        $picker.find('.weui-picker__group').eq(level).scroll({
-            items: items,
-            temp: lineTemp[level],
-            onChange: function (item, index) {
-                //为当前的result赋值。
-                if (item) {
-                    result[level] = new Result(item);
-                } else {
-                    result[level] = null;
-                }
-                lineTemp[level] = index;
+      },
+      onConfirm: defaults.onConfirm
+    });
+  }
 
-                if (isMulti) {
-                    if(result.length == depth){
-                        defaults.onChange(result);
-                    }
-                } else {
-                    /**
-                     * @子列表处理
-                     * 1. 在没有子列表，或者值列表的数组长度为0时，隐藏掉子列表。
-                     * 2. 滑动之后发现重新有子列表时，再次显示子列表。
-                     *
-                     * @回调处理
-                     * 1. 因为滑动实际上是一层一层传递的：父列表滚动完成之后，会call子列表的onChange，从而带动子列表的滑动。
-                     * 2. 所以，使用者的传进来onChange回调应该在最后一个子列表滑动时再call
-                     */
-                    if (item.children && item.children.length > 0) {
-                        $picker.find('.weui-picker__group').eq(level + 1).show();
-                        !isMulti && scroll(item.children, level + 1); // 不是多列的情况下才继续处理children
-                    } else {
-                        //如果子列表test不通过，子孙列表都隐藏。
-                        const $items = $picker.find('.weui-picker__group');
-                        $items.forEach((ele, index) => {
-                            if (index > level) {
-                                $(ele).hide();
-                            }
-                        });
+  let _depth = depth;
+  while (_depth--) {
+    groups += groupTpl;
+  }
 
-                        result.splice(level + 1);
+  $picker.find('.weui-picker__bd').html(groups);
+  show();
 
-                        defaults.onChange(result);
-                    }
-                }
-            },
-            onConfirm: defaults.onConfirm
-        });
-    }
+  if (isMulti) {
+    final.forEach((item, index) => {
+      scroll(item, index);
+    });
+  }
+  else {
+    scroll(final, 0);
+  }
 
+  $picker
+  .on('click', '.weui-mask', function() {
+    hide();
+  })
+  .on('click', '.weui-picker__btn', function() {
+    hide();
+  })
+  .on('click', '#weui-picker-confirm', function() {
+    defaults.onConfirm(result);
+  });
 
-    let _depth = depth;
-    while (_depth--) {
-        groups += groupTpl;
-    }
-
-    $picker.find('.weui-picker__bd').html(groups);
-    show();
-
-    if (isMulti) {
-        items.forEach((item, index) => {
-            scroll(item, index);
-        });
-    } else {
-        scroll(items, 0);
-    }
-
-    $picker
-        .on('click', '.weui-mask', function () { hide(); })
-        .on('click', '.weui-picker__btn', function () { hide(); })
-        .on('click', '#weui-picker-confirm', function () {
-            defaults.onConfirm(result);
-        });
-
-    _sington = $picker[0];
-    _sington.hide = hide;
-    return _sington;
+  _sington = $picker[0];
+  _sington.hide = hide;
+  return _sington;
 }
 
 /**
@@ -416,80 +430,77 @@ function picker() {
  *  });
  */
 function datePicker(options) {
-    const nowDate = new Date();
+  const nowDate = new Date();
 
-    const defaults = $.extend({
-        id: 'datePicker',
-        onChange: $.noop,
-        onConfirm: $.noop,
-        start: nowDate.getFullYear() - 20,
-        end: nowDate.getFullYear() + 20,
-        defaultValue: [nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate()],
-        cron: '* * *'
-    }, options);
+  const defaults = $.extend({
+    id: 'datePicker',
+    onChange: $.noop,
+    onConfirm: $.noop,
+    start: nowDate.getFullYear() - 20,
+    end: nowDate.getFullYear() + 20,
+    defaultValue: [nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate()],
+    cron: '* * *'
+  }, options);
 
-    // 兼容原来的 start、end 传 Number 的用法
-    if (typeof defaults.start === 'number') {
-        defaults.start = new Date(`${defaults.start}/01/01`);
+  // 兼容原来的 start、end 传 Number 的用法
+  if (typeof defaults.start === 'number') {
+    defaults.start = new Date(`${defaults.start}/01/01`);
+  }
+  else if (typeof defaults.start === 'string') {
+    defaults.start = new Date(defaults.start.replace(/-/g, '/'));
+  }
+  if (typeof defaults.end === 'number') {
+    defaults.end = new Date(`${defaults.end}/12/31`);
+  }
+  else if (typeof defaults.end === 'string') {
+    defaults.end = new Date(defaults.end.replace(/-/g, '/'));
+  }
+
+  const findBy = (array, key, value) => {
+    for (let i = 0, len = array.length; i < len; i++) {
+      const obj = array[i];
+      if (obj[key] === value) {
+        return obj;
+      }
     }
-    else if (typeof defaults.start === 'string') {
-        defaults.start = new Date(defaults.start.replace(/-/g, '/'));
+  };
+
+  const date = [];
+  const interval = parse(defaults.cron, defaults.start, defaults.end);
+  let obj;
+  do {
+    obj = interval.next();
+
+    const year = obj.value.getFullYear();
+    const month = obj.value.getMonth() + 1;
+    const day = obj.value.getDate();
+
+    let Y = findBy(date, 'value', year);
+    if (!Y) {
+      Y = {
+        label: year + '年',
+        value: year,
+        children: []
+      };
+      date.push(Y);
     }
-    if (typeof defaults.end === 'number') {
-        defaults.end = new Date(`${defaults.end}/12/31`);
+    let M = findBy(Y.children, 'value', month);
+    if (!M) {
+      M = {
+        label: month + '月',
+        value: month,
+        children: []
+      };
+      Y.children.push(M);
     }
-    else if (typeof defaults.end === 'string') {
-        defaults.end = new Date(defaults.end.replace(/-/g, '/'));
-    }
+    M.children.push({
+      label: day + '日',
+      value: day
+    });
+  }
+  while (!obj.done);
 
-    const findBy = (array, key, value) => {
-        for(let i = 0, len = array.length; i < len; i++){
-            const obj = array[i];
-            if(obj[key] == value){
-                return obj;
-            }
-        }
-    };
-
-    const date = [];
-    const interval = cron.parse(defaults.cron, defaults.start, defaults.end);
-    let obj;
-    do {
-        obj = interval.next();
-
-        const year = obj.value.getFullYear();
-        const month = obj.value.getMonth() + 1;
-        const day = obj.value.getDate();
-
-        let Y = findBy(date, 'value', year);
-        if (!Y) {
-            Y = {
-                label: year + '年',
-                value: year,
-                children: []
-            };
-            date.push(Y);
-        }
-        let M = findBy(Y.children, 'value', month);
-        if (!M) {
-            M = {
-                label: month + '月',
-                value: month,
-                children: []
-            };
-            Y.children.push(M);
-        }
-        M.children.push({
-            label: day + '日',
-            value: day
-        });
-    }
-    while (!obj.done);
-
-    return picker(date, defaults);
+  return picker(date, defaults);
 }
 
-export default {
-    picker,
-    datePicker
-};
+export { picker, datePicker };

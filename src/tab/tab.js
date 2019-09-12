@@ -1,13 +1,13 @@
 /*
 * Tencent is pleased to support the open source community by making WeUI.js available.
-* 
+*
 * Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
-* 
+*
 * Licensed under the MIT License (the "License"); you may not use this file except in compliance
 * with the License. You may obtain a copy of the License at
-* 
+*
 *       http://opensource.org/licenses/MIT
-* 
+*
 * Unless required by applicable law or agreed to in writing, software distributed under the License is
 * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 * either express or implied. See the License for the specific language governing permissions and
@@ -53,33 +53,35 @@ import $ from '../util/util';
  * ```
  */
 function tab(selector, options = {}) {
-    const $eles = $(selector);
-    options = $.extend({
-        defaultIndex: 0,
-        onChange: $.noop
-    }, options);
+  const $eles = $(selector);
+  options = $.extend({
+    defaultIndex: 0,
+    onChange: $.noop
+  }, options);
 
-    $eles.forEach((ele) => {
-        const $tab = $(ele);
-        const $tabItems = $tab.find('.weui-navbar__item, .weui-tabbar__item');
-        const $tabContents = $tab.find('.weui-tab__content');
+  $eles.forEach((ele) => {
+    const $tab = $(ele);
+    const $tabItems = $tab.find('.weui-navbar__item, .weui-tabbar__item');
+    const $tabContents = $tab.find('.weui-tab__content');
 
-        $tabItems.eq(options.defaultIndex).addClass('weui-bar__item_on');
-        $tabContents.eq(options.defaultIndex).show();
+    $tabItems.eq(options.defaultIndex).addClass('weui-bar__item_on');
+    $tabContents.eq(options.defaultIndex).show();
 
-        $tabItems.on('click', function () {
-            const $this = $(this), index = $this.index();
+    $tabItems.on('click', function() {
+      const $this = $(this);
+      const index = $this.index();
 
-            $tabItems.removeClass('weui-bar__item_on');
-            $this.addClass('weui-bar__item_on');
+      $tabItems.removeClass('weui-bar__item_on');
+      $this.addClass('weui-bar__item_on');
 
-            $tabContents.hide();
-            $tabContents.eq(index).show();
+      $tabContents.hide();
+      $tabContents.eq(index).show();
 
-            options.onChange.call(this, index);
-        });
+      options.onChange.call(this, index);
     });
+  });
 
-    return this;
+  return this;
 }
+
 export default tab;

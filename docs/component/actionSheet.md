@@ -14,6 +14,7 @@ actionsheet 弹出式菜单
 | actions[].label | <code>string</code> | 选项的文字 |
 | actions[].onClick | <code>function</code> | 选项点击时的回调 |
 | [options] | <code>object</code> | 配置项 |
+| [options.title] | <code>string</code> | actionSheet的title，如果isAndroid=true，则不会显示 |
 | [options.className] | <code>string</code> | 自定义类名 |
 | [options.onClose] | <code>function</code> | actionSheet关闭后的回调 |
 
