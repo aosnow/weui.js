@@ -23,13 +23,31 @@ import actionSheet from './actionSheet/actionSheet';
 import topTips from './topTips/topTips';
 import searchBar from './searchBar/searchBar';
 import tab from './tab/tab';
-import form from './form/form';
+import * as form from './form/form';
 import uploader from './uploader/uploader';
 import { picker, datePicker } from './picker/picker';
 import gallery from './gallery/gallery';
 import slider from './slider/slider';
 
-export default {
+const _default = {
+  dialog,
+  alert,
+  confirm,
+  toast,
+  loading,
+  actionSheet,
+  topTips,
+  searchBar,
+  tab,
+  form,
+  uploader,
+  picker,
+  datePicker,
+  gallery,
+  slider
+};
+export default _default;
+export {
   dialog,
   alert,
   confirm,

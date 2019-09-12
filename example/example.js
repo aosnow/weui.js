@@ -1,8 +1,5 @@
 // import 'weui';
-import FastClick from 'fastclick';
-import weui from '../src/weui';
-
-FastClick.attach(document.body);
+import weui from '@/weui';
 
 /* dialog */
 document.querySelector('#alertBtn').addEventListener('click', function() {
@@ -34,7 +31,7 @@ document.querySelector('#toastBtn').addEventListener('click', function() {
 
 /* loading */
 document.querySelector('#loadingBtn').addEventListener('click', function() {
-  var loading = weui.loading('loading');
+  const loading = weui.loading('loading');
   setTimeout(function() {
     loading.hide();
   }, 3000);
@@ -131,7 +128,7 @@ document.querySelector('#pickerBtn').addEventListener('click', function() {
     defaultValue: [2],
     className: 'custom-classname',
     onChange: function(result) {
-      //console.log(item, index);
+      // console.log(item, index);
       console.log(result);
     },
     onConfirm: function(result) {
@@ -295,15 +292,15 @@ document.querySelector('#cascadePickerBtn').addEventListener('click', function()
 /* searchbar */
 weui.searchBar('#searchBar');
 
-/* slider 因为需要获取长度，所以必须要在slider显示的时候才调用weui.slider*/
-var isSetSlider = false;
+/* slider 因为需要获取长度，所以必须要在slider显示的时候才调用weui.slider */
+let isSetSlider = false;
 
 function setSlider() {
   if (isSetSlider) return;
   isSetSlider = true;
 
   // 普通slider
-  var sliderValue = document.getElementById('sliderValue');
+  const sliderValue = document.getElementById('sliderValue');
   weui.slider('#slider', {
     defaultValue: 50,
     onChange: function(percent) {
@@ -313,7 +310,7 @@ function setSlider() {
   });
 
   // 带step的slider
-  var sliderStepValue = document.getElementById('sliderStepValue');
+  const sliderStepValue = document.getElementById('sliderStepValue');
   weui.slider('#sliderStep', {
     step: 10,
     defaultValue: 40,
@@ -324,7 +321,7 @@ function setSlider() {
   });
 
   // 分块的slider
-  var sliderBlockValue = document.getElementById('sliderBlockValue');
+  const sliderBlockValue = document.getElementById('sliderBlockValue');
   weui.slider('#sliderBlock', {
     step: 100 / 3,
     defaultValue: 33.333,
@@ -341,7 +338,7 @@ weui.tab('#tab', {
   onChange: function(index) {
     console.log(index);
 
-    if (index == 3) {
+    if (index === 3) {
       setSlider(); // 设置slider
     }
   }
@@ -349,7 +346,7 @@ weui.tab('#tab', {
 
 /* form */
 // 约定正则
-var regexp = {
+const regexp = {
   regexp: {
     IDNUM: /(?:^\d{15}$)|(?:^\d{18}$)|^\d{17}[\dXx]$/,
     VCODE: /^.{4}$/
@@ -364,7 +361,7 @@ document.querySelector('#formSubmitBtn').addEventListener('click', function() {
   weui.form.validate('#form', function(error) {
     console.log(error);
     if (!error) {
-      var loading = weui.loading('提交中...');
+      const loading = weui.loading('提交中...');
       setTimeout(function() {
         loading.hide();
         weui.toast('提交成功', 3000);
@@ -374,17 +371,18 @@ document.querySelector('#formSubmitBtn').addEventListener('click', function() {
 });
 
 /* 图片自动上传 */
-var uploadCount = 0, uploadList = [];
-var uploadCountDom = document.getElementById('uploadCount');
+let uploadCount = 0;
+const uploadList = [];
+const uploadCountDom = document.getElementById('uploadCount');
 weui.uploader('#uploader', {
-  url: 'http://' + location.hostname + ':8002/upload',
+  url: 'http://' + window.location.hostname + ':8002/upload',
   auto: true,
   type: 'file',
   fileVal: 'fileVal',
   compress: {
     width: 1600,
     height: 1600,
-    quality: .8
+    quality: 0.8
   },
   onBeforeQueued: function(files) {
     if (['image/jpg', 'image/jpeg', 'image/png', 'image/gif'].indexOf(this.type) < 0) {
@@ -431,29 +429,29 @@ weui.uploader('#uploader', {
 
 // 缩略图预览
 document.querySelector('#uploaderFiles').addEventListener('click', function(e) {
-  var target = e.target;
+  let target = e.target;
 
   while (!target.classList.contains('weui-uploader__file') && target) {
     target = target.parentNode;
   }
   if (!target) return;
 
-  var url = target.getAttribute('style') || '';
-  var id = target.getAttribute('data-id');
+  let url = target.getAttribute('style') || '';
+  const id = target.getAttribute('data-id');
 
   if (url) {
     url = url.match(/url\((.*?)\)/)[1].replace(/"/g, '');
   }
-  var gallery = weui.gallery(url, {
+  const gallery = weui.gallery(url, {
     className: 'custom-name',
     onDelete: function() {
       weui.confirm('确定删除该图片？', function() {
         --uploadCount;
         uploadCountDom.innerHTML = uploadCount;
 
-        for (var i = 0, len = uploadList.length; i < len; ++i) {
-          var file = uploadList[i];
-          if (file.id == id) {
+        for (let i = 0, len = uploadList.length; i < len; ++i) {
+          const file = uploadList[i];
+          if (file.id === id) {
             file.stop();
             break;
           }
@@ -466,7 +464,7 @@ document.querySelector('#uploaderFiles').addEventListener('click', function(e) {
 });
 
 /* 图片手动上传 */
-var uploadCustomFileList = [];
+const uploadCustomFileList = [];
 
 // 这里是简单的调用，其余api请参考文档
 weui.uploader('#uploaderCustom', {
@@ -486,26 +484,26 @@ document.getElementById('uploaderCustomBtn').addEventListener('click', function(
 
 // 缩略图预览
 document.querySelector('#uploaderCustomFiles').addEventListener('click', function(e) {
-  var target = e.target;
+  let target = e.target;
 
   while (!target.classList.contains('weui-uploader__file') && target) {
     target = target.parentNode;
   }
   if (!target) return;
 
-  var url = target.getAttribute('style') || '';
-  var id = target.getAttribute('data-id');
+  let url = target.getAttribute('style') || '';
+  const id = target.getAttribute('data-id');
 
   if (url) {
     url = url.match(/url\((.*?)\)/)[1].replace(/"/g, '');
   }
-  var gallery = weui.gallery(url, {
+  const gallery = weui.gallery(url, {
     onDelete: function() {
       weui.confirm('确定删除该图片？', function() {
-        var index;
-        for (var i = 0, len = uploadCustomFileList.length; i < len; ++i) {
-          var file = uploadCustomFileList[i];
-          if (file.id == id) {
+        let index;
+        for (let i = 0, len = uploadCustomFileList.length; i < len; ++i) {
+          const file = uploadCustomFileList[i];
+          if (file.id === id) {
             index = i;
             break;
           }
@@ -518,3 +516,10 @@ document.querySelector('#uploaderCustomFiles').addEventListener('click', functio
     }
   });
 });
+
+// 支持免刷新页面热更新
+if (module.hot) {
+  module.hot.accept('@/weui', function() {
+    console.log('weui updated!');
+  });
+}

@@ -23,7 +23,8 @@ import $ from 'balajs';
 
 /* 判断系统 */
 function _detect(ua) {
-  let os = this.os = {}, android = ua.match(/(Android);?[\s\/]+([\d.]+)?/);
+  const os = this.os = {};
+  const android = ua.match(/(Android);?[\s\/]+([\d.]+)?/);
   if (android) {
     os.android = true;
     os.version = android[2];
@@ -92,7 +93,7 @@ objectAssign($.fn, {
   /**
    *
    * @param index
-   * @returns {*|jQuery|HTMLElement}
+   * @returns {*|Zepto|HTMLElement}
    */
   eq: function(index) {
     return $(this[index]);
@@ -211,7 +212,7 @@ objectAssign($.fn, {
    */
   offAll: function() {
     this.forEach(($element, index) => {
-      var clone = $element.cloneNode(true);
+      const clone = $element.cloneNode(true);
       $element.parentNode.replaceChild(clone, $element);
 
       this[index] = clone;
@@ -222,10 +223,10 @@ objectAssign($.fn, {
    *
    * @returns {*}
    */
-  val: function() {
-    if (arguments.length) {
+  val: function(...args) {
+    if (args.length) {
       this.forEach(($element) => {
-        $element.value = arguments[0];
+        $element.value = args[0];
       });
       return this;
     }
@@ -235,9 +236,9 @@ objectAssign($.fn, {
    *
    * @returns {*}
    */
-  attr: function() {
-    if (typeof arguments[0] == 'object') {
-      const attrsObj = arguments[0];
+  attr: function(...args) {
+    if (typeof args[0] === 'object') {
+      const attrsObj = args[0];
       const that = this;
       Object.keys(attrsObj).forEach((attr) => {
         that.forEach(($element) => {
@@ -247,12 +248,12 @@ objectAssign($.fn, {
       return this;
     }
 
-    if (typeof arguments[0] == 'string' && arguments.length < 2) {
-      return this[0].getAttribute(arguments[0]);
+    if (typeof args[0] === 'string' && arguments.length < 2) {
+      return this[0].getAttribute(args[0]);
     }
 
     this.forEach(($element) => {
-      $element.setAttribute(arguments[0], arguments[1]);
+      $element.setAttribute(args[0], args[1]);
     });
     return this;
   }
@@ -279,7 +280,7 @@ objectAssign($, {
    *    <% } %>
    *    <div class="weui-dialog__bd"><%=content%></div>
    *    <div class="weui-dialog__ft">
-   *    <% for(var i = 0; i < buttons.length; i++){ %>
+   *    <% for(let i = 0; i < buttons.length; i++){ %>
    *        <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_<%=buttons[i]['type']%>"><%=buttons[i]['label']%></a>
    *    <% } %>
    *    </div>
@@ -291,16 +292,20 @@ objectAssign($, {
    * @returns {String}
    */
   render: function(tpl, data) {
-    const code = 'var p=[];with(this){p.push(\'' +
+    const code = 'const p=[];with(this){p.push(\'' +
                  tpl
                  .replace(/[\r\t\n]/g, ' ')
                  .split('<%').join('\t')
                  .replace(/((^|%>)[^\t]*)'/g, '$1\r')
                  .replace(/\t=(.*?)%>/g, '\',$1,\'')
-                 .split('\t').join('\');')
-                 .split('%>').join('p.push(\'')
-                 .split('\r').join('\\\'')
+                 .split('\t')
+                 .join('\');')
+                 .split('%>')
+                 .join('p.push(\'')
+                 .split('\r')
+                 .join('\\\'')
                  + '\');}return p.join(\'\');';
+    /* eslint-disable no-new-func */
     return new Function(code).apply(data);
   },
   /**
@@ -308,7 +313,8 @@ objectAssign($, {
    * (from http://stackoverflow.com/questions/2664045/how-to-get-an-html-elements-style-values-in-javascript)
    */
   getStyle: function(el, styleProp) {
-    var value, defaultView = (el.ownerDocument || document).defaultView;
+    let value;
+    let defaultView = (el.ownerDocument || document).defaultView;
     // W3C standard way:
     if (defaultView && defaultView.getComputedStyle) {
       // sanitize property name to css notation
@@ -325,7 +331,8 @@ objectAssign($, {
       // convert other units to pixels on IE
       if (/^\d+(em|pt|%|ex)?$/i.test(value)) {
         return ((value) => {
-          var oldLeft = el.style.left, oldRsLeft = el.runtimeStyle.left;
+          const oldLeft = el.style.left;
+          const oldRsLeft = el.runtimeStyle.left;
           el.runtimeStyle.left = el.currentStyle.left;
           el.style.left = value || 0;
           value = el.style.pixelLeft + 'px';

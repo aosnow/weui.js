@@ -1,13 +1,13 @@
 /*
 * Tencent is pleased to support the open source community by making WeUI.js available.
-* 
+*
 * Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
-* 
+*
 * Licensed under the MIT License (the "License"); you may not use this file except in compliance
 * with the License. You may obtain a copy of the License at
-* 
+*
 *       http://opensource.org/licenses/MIT
-* 
+*
 * Unless required by applicable law or agreed to in writing, software distributed under the License is
 * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 * either express or implied. See the License for the specific language governing permissions and
@@ -73,7 +73,7 @@ function slider(selector, options = {}) {
     const $sliderTrack = $slider.find('.weui-slider__track');
     const $sliderHandler = $slider.find('.weui-slider__handler');
 
-    const sliderLength = parseInt($.getStyle($sliderInner[0], 'width')); // slider的长度
+    const sliderLength = parseInt($.getStyle($sliderInner[0], 'width'), 10); // slider的长度
     const sliderLeft = $sliderInner[0].offsetLeft; // slider相对于页面的offset
     let handlerStartPos = 0; // handler起始位置
     let handlerStartX = 0; // handler touchstart的X
@@ -92,8 +92,8 @@ function slider(selector, options = {}) {
     }
 
     function setHandler(distance) {
-      let dist, // handler的目标位置
-        percent; // 所在位置的百分比
+      let dist; // handler的目标位置
+      let percent; // 所在位置的百分比
 
       if (options.step) {
         distance = Math.round(distance / stepWidth) * stepWidth;

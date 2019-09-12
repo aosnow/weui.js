@@ -1,7 +1,7 @@
 /*
-* Tencent is pleased to support the open source community by making WeUI.js available.
+* Mudas(mschool.tech) is pleased to support the open source community by making WeUI.js available.
 *
-* Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
+* Copyright (C) 2019 mudas. All rights reserved.
 *
 * Licensed under the MIT License (the "License"); you may not use this file except in compliance
 * with the License. You may obtain a copy of the License at
@@ -60,9 +60,15 @@ class Schedule {
     this._pointer = start;
   }
 
+  /**
+   * 查询下一个合法范围内的日期
+   * @return {Date}
+   * @private
+   */
   _findNext() {
     let next;
-    while (true) {
+    let cond = true;
+    while (cond) {
       if (this._end.getTime() - this._pointer.getTime() < 0) {
         throw new Error(`out of range, end is ${this._end}, current is ${this._pointer}`);
       }
@@ -71,31 +77,31 @@ class Schedule {
       const date = this._pointer.getDate();
       const day = this._pointer.getDay();
 
-      if (this._months.indexOf(month + 1) === -1) {
+      const mc = this._months.indexOf(month + 1) !== -1;
+      const dc = this._dates.indexOf(date) !== -1;
+      const dayc = this._days.indexOf(day) !== -1;
+
+      if (mc && dc && dayc) {
+        next = new Date(this._pointer);
+        break;
+      }
+      else if (!mc) {
         this._pointer.setMonth(month + 1);
         this._pointer.setDate(1);
-        continue;
       }
-
-      if (this._dates.indexOf(date) === -1) {
+      else if (!dc) {
         this._pointer.setDate(date + 1);
-        continue;
       }
-
-      if (this._days.indexOf(day) === -1) {
+      else {
         this._pointer.setDate(date + 1);
-        continue;
       }
 
-      next = new Date(this._pointer);
-
-      break;
     }
     return next;
   }
 
   /**
-   * fetch next data
+   * fetch next date
    */
   next() {
     const value = this._findNext();
@@ -133,26 +139,30 @@ function parseField(field, constraints) {
 
   // 处理 1,2,5-9 这种情况
   const fields = field.split(',');
+  const replacer = function($0, lower, upper, step) {
+    // ref to `cron-parser`
+    step = parseInt(step, 10) || 1;
+    // Positive integer higher than constraints[0]
+    lower = Math.min(Math.max(low, ~~Math.abs(lower)), high);
+
+    // Positive integer lower than constraints[1]
+    upper = upper ? Math.min(high, ~~Math.abs(upper)) : lower;
+
+    // Count from the lower barrier to the upper
+    pointer = lower;
+
+    do {
+      result.push(pointer);
+      pointer += step;
+    } while (pointer <= upper);
+
+    // return result;
+  };
+
   for (let i = 0, len = fields.length; i < len; i++) {
     const f = fields[i];
     if (f.match(regex)) {
-      f.replace(regex, function($0, lower, upper, step) {
-        // ref to `cron-parser`
-        step = parseInt(step) || 1;
-        // Positive integer higher than constraints[0]
-        lower = Math.min(Math.max(low, ~~Math.abs(lower)), high);
-
-        // Positive integer lower than constraints[1]
-        upper = upper ? Math.min(high, ~~Math.abs(upper)) : lower;
-
-        // Count from the lower barrier to the upper
-        pointer = lower;
-
-        do {
-          result.push(pointer);
-          pointer += step;
-        }while (pointer <= upper);
-      });
+      f.replace(regex, replacer);
     }
   }
   return result;
@@ -175,6 +185,4 @@ function parse(expr, start, end) {
   return new Schedule(fields, start, end);
 }
 
-export default {
-  parse
-};
+export default parse;

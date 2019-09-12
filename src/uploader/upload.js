@@ -20,7 +20,7 @@ export default function upload(options) {
   const data = {
     name: name,
     type: type,
-    size: options.type == 'file' ? file.size : file.base64.length,
+    size: options.type === 'file' ? file.size : file.base64.length,
     lastModifiedDate: lastModifiedDate
   };
   const headers = {};
@@ -40,7 +40,7 @@ export default function upload(options) {
   Object.keys(data).forEach((key) => {
     formData.append(key, data[key]);
   });
-  if (options.type == 'file') {
+  if (options.type === 'file') {
     formData.append(fileVal, file, name);
   }
   else {
@@ -48,8 +48,8 @@ export default function upload(options) {
   }
 
   xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4) {
-      if (xhr.status == 200) {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
         try {
           // 只支持json
           const ret = JSON.parse(xhr.responseText);
@@ -65,7 +65,7 @@ export default function upload(options) {
     }
   };
   xhr.upload.addEventListener('progress', function(evt) {
-    if (evt.total == 0) return;
+    if (evt.total === 0) return;
 
     const percent = Math.ceil(evt.loaded / evt.total) * 100;
 

@@ -65,7 +65,7 @@ let _id = 0;
  *
  * #### js
  * ```javascript
- * var uploadCount = 0;
+ * let uploadCount = 0;
  * weui.uploader('#uploader', {
  *    url: 'http://localhost:8081',
  *    auto: true,
@@ -192,7 +192,7 @@ function uploader(selector, options) {
     options.compress = $.extend({
       width: 1600,
       height: 1600,
-      quality: .8
+      quality: 0.8
     }, options.compress);
   }
 
@@ -270,7 +270,7 @@ function uploader(selector, options) {
       return;
     }
 
-    if (options.compress === false && options.type == 'file') {
+    if (options.compress === false && options.type === 'file') {
       // 以原文件方式上传
       Array.prototype.forEach.call(files, (file) => {
         file.id = ++_id;

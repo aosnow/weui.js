@@ -83,12 +83,10 @@ function actionSheet(menus = [], actions = [], options = {}) {
   const $actionSheetMask = $actionSheetWrap.find('.weui-mask');
 
   function _hide(callback) {
-    _hide = $.noop; // 防止二次调用导致报错
-
     $actionSheet.addClass(options.isAndroid ? 'weui-animate-fade-out' : 'weui-animate-slide-down');
     $actionSheetMask
     .addClass('weui-animate-fade-out')
-    .on('animationend webkitAnimationEnd', function() {
+    .on('animationend webkitAnimationEnd', () => {
       $actionSheetWrap.remove();
       _sington = false;
       options.onClose();
@@ -108,15 +106,15 @@ function actionSheet(menus = [], actions = [], options = {}) {
   $actionSheet.addClass(options.isAndroid ? 'weui-animate-fade-in' : 'weui-animate-slide-up');
   $actionSheetMask
   .addClass('weui-animate-fade-in')
-  .on('click', function() {
+  .on('click', () => {
     hide();
   });
-  $actionSheetWrap.find('.weui-actionsheet__menu').on('click', '.weui-actionsheet__cell', function(evt) {
+  $actionSheetWrap.find('.weui-actionsheet__menu').on('click', '.weui-actionsheet__cell', (evt) => {
     const index = $(this).index();
     menus[index].onClick.call(this, evt);
     hide();
   });
-  $actionSheetWrap.find('.weui-actionsheet__action').on('click', '.weui-actionsheet__cell', function(evt) {
+  $actionSheetWrap.find('.weui-actionsheet__action').on('click', '.weui-actionsheet__cell', (evt) => {
     const index = $(this).index();
     actions[index].onClick.call(this, evt);
     hide();

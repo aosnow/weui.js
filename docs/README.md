@@ -1,4 +1,4 @@
-# Summary
+# Api for @mudas/weui.js
 
 - [actionSheet](component/actionSheet.md)
 - [alert](component/alert.md)
@@ -6,6 +6,7 @@
 - [dialog](component/dialog.md)
 - [form](component/form.md)
 - [gallery](component/gallery.md)
+- [halfScreen](component/halfScreen.md)
 - [loading](component/loading.md)
 - [picker](component/picker.md)
 - [searchBar](component/searchBar.md)

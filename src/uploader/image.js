@@ -20,12 +20,12 @@
  */
 function detectVerticalSquash(img) {
   // 拍照在IOS7或以下的机型会出现照片被压扁的bug
-  var data;
-  var ih = img.naturalHeight;
-  var canvas = document.createElement('canvas');
+  let data;
+  const ih = img.naturalHeight;
+  const canvas = document.createElement('canvas');
   canvas.width = 1;
   canvas.height = ih;
-  var ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d');
   ctx.drawImage(img, 0, 0);
   try {
     data = ctx.getImageData(0, 0, 1, ih).data;
@@ -34,11 +34,11 @@ function detectVerticalSquash(img) {
     console.log('Cannot check verticalSquash: CORS?');
     return 1;
   }
-  var sy = 0;
-  var ey = ih;
-  var py = ih;
+  let sy = 0;
+  let ey = ih;
+  let py = ih;
   while (py > sy) {
-    var alpha = data[(py - 1) * 4 + 3];
+    const alpha = data[(py - 1) * 4 + 3];
     if (alpha === 0) {
       ey = py;
     }
@@ -47,7 +47,7 @@ function detectVerticalSquash(img) {
     }
     py = (ey + sy) >> 1; // py = parseInt((ey + sy) / 2)
   }
-  var ratio = (py / ih);
+  const ratio = (py / ih);
   return (ratio === 0) ? 1 : ratio;
 }
 
@@ -56,18 +56,18 @@ function detectVerticalSquash(img) {
  * @param dataURI
  */
 function dataURItoBuffer(dataURI) {
-  var byteString = atob(dataURI.split(',')[1]);
-  var buffer = new ArrayBuffer(byteString.length);
-  var view = new Uint8Array(buffer);
-  for (var i = 0; i < byteString.length; i++) {
+  const byteString = atob(dataURI.split(',')[1]);
+  const buffer = new ArrayBuffer(byteString.length);
+  const view = new Uint8Array(buffer);
+  for (let i = 0; i < byteString.length; i++) {
     view[i] = byteString.charCodeAt(i);
   }
   return buffer;
 }
 
 function dataURItoBlob(dataURI) {
-  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-  var buffer = dataURItoBuffer(dataURI);
+  const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+  const buffer = dataURItoBuffer(dataURI);
   return new Blob([buffer], { type: mimeString });
 }
 
@@ -76,25 +76,26 @@ function dataURItoBlob(dataURI) {
  * ref to http://stackoverflow.com/questions/7584794/accessing-jpeg-exif-rotation-data-in-javascript-on-the-client-side
  */
 function getOrientation(buffer) {
-  var view = new DataView(buffer);
-  if (view.getUint16(0, false) != 0xFFD8) return -2;
-  var length = view.byteLength, offset = 2;
+  const view = new DataView(buffer);
+  if (view.getUint16(0, false) !== 0xFFD8) return -2;
+  const length = view.byteLength;
+  let offset = 2;
   while (offset < length) {
-    var marker = view.getUint16(offset, false);
+    const marker = view.getUint16(offset, false);
     offset += 2;
-    if (marker == 0xFFE1) {
-      if (view.getUint32(offset += 2, false) != 0x45786966) return -1;
-      var little = view.getUint16(offset += 6, false) == 0x4949;
+    if (marker === 0xFFE1) {
+      if (view.getUint32(offset += 2, false) !== 0x45786966) return -1;
+      const little = view.getUint16(offset += 6, false) === 0x4949;
       offset += view.getUint32(offset + 4, little);
-      var tags = view.getUint16(offset, little);
+      const tags = view.getUint16(offset, little);
       offset += 2;
-      for (var i = 0; i < tags; i++) {
-        if (view.getUint16(offset + (i * 12), little) == 0x0112) {
+      for (let i = 0; i < tags; i++) {
+        if (view.getUint16(offset + (i * 12), little) === 0x0112) {
           return view.getUint16(offset + (i * 12) + 8, little);
         }
       }
     }
-    else if ((marker & 0xFF00) != 0xFF00) {
+    else if ((marker & 0xFF00) !== 0xFF00) {
       break;
     }
     else {
@@ -109,7 +110,8 @@ function getOrientation(buffer) {
  * ref to http://stackoverflow.com/questions/19463126/how-to-draw-photo-with-correct-orientation-in-canvas-after-capture-photo-by-usin
  */
 function orientationHelper(canvas, ctx, orientation) {
-  const w = canvas.width, h = canvas.height;
+  const w = canvas.width;
+  const h = canvas.height;
   if (orientation > 4) {
     canvas.width = h;
     canvas.height = w;
@@ -175,11 +177,11 @@ function compress(file, options, callback) {
       let dataURL;
 
       if (w < h && h > maxH) {
-        w = parseInt(maxH * img.width / img.height);
+        w = parseInt(maxH * img.width / img.height, 10);
         h = maxH;
       }
       else if (w >= h && w > maxW) {
-        h = parseInt(maxW * img.height / img.width);
+        h = parseInt(maxW * img.height / img.width, 10);
         w = maxW;
       }
 
@@ -198,7 +200,7 @@ function compress(file, options, callback) {
         dataURL = canvas.toDataURL(file.type);
       }
 
-      if (options.type == 'file') {
+      if (options.type === 'file') {
         if (/;base64,null/.test(dataURL) || /;base64,$/.test(dataURL)) {
           // 压缩出错，以文件方式上传的，采用原文件上传
           console.warn('Compress fail, dataURL is ' + dataURL + '. Next will use origin file to upload.');
@@ -230,6 +232,4 @@ function compress(file, options, callback) {
   reader.readAsDataURL(file);
 }
 
-export default {
-  compress
-};
+export { compress };

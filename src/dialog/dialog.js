@@ -49,7 +49,7 @@ let _sington;
  * });
  *
  * // 主动关闭
- * var $dialog = weui.dialog({...});
+ * const $dialog = weui.dialog({...});
  * $dialog.hide(function(){
  *      console.log('`dialog` has been hidden');
  * });
@@ -75,7 +75,7 @@ function dialog(options = {}) {
   const $mask = $dialogWrap.find('.weui-mask');
 
   function _hide(callback) {
-    _hide = $.noop; // 防止二次调用导致报错
+    // _hide = $.noop; // 防止二次调用导致报错
 
     $mask.addClass('weui-animate-fade-out');
     $dialog

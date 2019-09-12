@@ -1,21 +1,22 @@
 // https://eslint.org/docs/user-guide/configuring
 
 module.exports = {
-  root: true,
-  parserOptions: { parser: 'babel-eslint' },
   env: {
     browser: true,
-    commonjs: true,
+    // commonjs: true,
     es6: true
   },
-  // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
-  // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-  extends: ['plugin:vue/essential', '@vue/airbnb'],
-  // required to lint *.vue files
-  plugins: ['vue'],
-  // add your custom rules here
+  parserOptions: {
+    parser: 'babel-eslint',
+    ecmaVersion: 2018,
+    sourceType: 'module'
+  },
+  extends: ['airbnb-base'],
+  plugins: ['import'],
+  // for vue
+  // extends: ['plugin:vue/essential', '@vue/airbnb'],
+  // plugins: ['vue'],
   rules: {
-    // don't require .vue extension when importing
     'import/extensions': ['off', 'never'],
     'import/no-unresolved': 'off',
     'import/no-named-as-default': 'off',
@@ -58,8 +59,6 @@ module.exports = {
     'no-cond-assign': 'off',
     // 允许连续多等号赋值
     'no-multi-assign': 'off',
-    // 允许对函数参数重新赋值
-    'no-param-reassign': 'off',
     // 关闭推荐未重新赋值的let变量设置成const常量
     'prefer-const': 'off',
     // 关闭推荐模板字符串
@@ -72,26 +71,8 @@ module.exports = {
     'no-unused-expressions': 'off',
     // 禁止变量和方法的前置下划线，类定义私有成员要用到
     'no-underscore-dangle': 'off',
-    // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     // 要求或禁止尾随逗号（比如Object末位属性）
     'comma-dangle': ['error', 'never'],
-    // 要求或禁止语句块 {} 之前是否有空格
-    'space-before-blocks': ['error', 'always'],
-    // 函数定义时括号前是否需要空格
-    'space-before-function-paren': ['error', {
-      'anonymous': 'never',
-      'named': 'never',
-      'asyncArrow': 'always'
-    }],
-    // 是否允许使用 console 语句
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    // 箭头函数的函数体样式：是否需要｛｝包含
-    'arrow-body-style': 'off',
-    // 箭头函数的参数表是否需要括号包起来
-    'arrow-parens': 'off',
-    // 匿名函数是否需要规定函数名
-    'func-names': 'off',
     // 大括号的换行风格
     'brace-style': ['error', 'stroustrup', { 'allowSingleLine': true }],
     // 当存在更简单的三元运算写法时，是否简化如：“x ? x : ''”开启时需要简化为 “x || ''”
@@ -109,6 +90,38 @@ module.exports = {
     }],
     'wrap-iife': ['error', 'inside'],
     'indent': 'off',
+
+    // function
+    // ---------------------------------------------------------------------------
+    // 允许对函数参数重新赋值
+    'no-param-reassign': 'off',
+    // 强制推荐箭头函数替换普通匿名函数
+    'prefer-arrow-callback': 'off',
+    // 要求或禁止语句块 {} 之前是否有空格
+    'space-before-blocks': ['error', 'always'],
+    // 函数定义时括号前是否需要空格
+    'space-before-function-paren': ['error', {
+      'anonymous': 'never',
+      'named': 'never',
+      'asyncArrow': 'always'
+    }],
+    // 箭头函数的函数体样式：是否需要｛｝包含
+    'arrow-body-style': 'off',
+    // 箭头函数的参数表是否需要括号包起来
+    'arrow-parens': 'off',
+    // 匿名函数是否需要规定函数名
+    'func-names': 'off',
+
+    // debug
+    // ---------------------------------------------------------------------------
+    // allow debugger during development
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    // 是否允许使用 console 语句
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+
+    // comments
+    // ---------------------------------------------------------------------------
+    'no-trailing-spaces': ['error', { 'skipBlankLines': true, 'ignoreComments': true }],
 
     // syntax
     // ---------------------------------------------------------------------------
