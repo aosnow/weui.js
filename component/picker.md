@@ -1,7 +1,7 @@
 ## Functions
 
 <dl>
-<dt><a href="#picker">picker(items, options)</a></dt>
+<dt><a href="#picker">picker(items, ...options)</a></dt>
 <dd><p>picker 多列选择器。</p>
 </dd>
 <dt><a href="#datePicker">datePicker(options)</a></dt>
@@ -11,15 +11,15 @@
 
 <a name="picker"></a>
 
-## picker(items, options)
+## picker(items, ...options)
 picker 多列选择器。
 
 **Kind**: global function  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| items | <code>array</code> |  | picker的数据，即用于生成picker的数据，picker的层级可以自己定义，但建议最多三层。数据格式参考example。 |
-| options | <code>Object</code> |  | 配置项 |
+| items | <code>Array</code> |  | picker的数据，即用于生成picker的数据，picker的层级可以自己定义，但建议最多三层。数据格式参考example。 |
+| ...options | <code>Array</code> &#124; <code>Object</code> |  | 配置项 |
 | [options.depth] | <code>number</code> |  | picker深度(也就是picker有多少列) 取值为1-3。如果为空，则取items第一项的深度。 |
 | [options.id] | <code>string</code> | <code>&quot;default&quot;</code> | 作为picker的唯一标识，作用是以id缓存当时的选择。（当你想每次传入的defaultValue都是不一样时，可以使用不同的id区分） |
 | [options.className] | <code>string</code> |  | 自定义类名 |
