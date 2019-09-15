@@ -41,6 +41,13 @@ const BaseConfig = {
 
   module: {
     rules: [
+
+      // zepto 不支持 commonjs 模式，用以下方式 export
+      {
+        test: require.resolve('zepto'),
+        use: ['exports-loader?window.Zepto', 'script-loader']
+      },
+
       // js babel es6 -----------------------------------------------------------
       {
         test: /\.m?jsx?$/,

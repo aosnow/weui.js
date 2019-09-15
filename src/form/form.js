@@ -197,7 +197,7 @@ function validate(selector, callback = $.noop, options = {}) {
 function checkIfBlur(selector, options = {}) {
   const $eles = $(selector);
 
-  $eles.forEach((ele) => {
+  $eles.forEach(function(ele) {
     const $form = $(ele);
     $form.find('[required]')
          .on('blur', function() {

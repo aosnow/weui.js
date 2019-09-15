@@ -1,141 +1,153 @@
-/*
-* Tencent is pleased to support the open source community by making WeUI.js available.
-*
-* Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
-*
-* Licensed under the MIT License (the "License"); you may not use this file except in compliance
-* with the License. You may obtain a copy of the License at
-*
-*       http://opensource.org/licenses/MIT
-*
-* Unless required by applicable law or agreed to in writing, software distributed under the License is
-* distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-* either express or implied. See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+// ------------------------------------------------------------------------------
+// name: slider
+// author: mudas( mschool.tech )
+// created: 2019.09.15 上午 6:49
+// ------------------------------------------------------------------------------
 
 import $ from '../util/util';
+import sliderButton from './slider-button';
 
-/**
- * slider slider滑块，单位是百分比。注意，因为需要获取slider的长度，所以必须要在slider可见的情况下来调用。
- * @param {string} selector slider的selector
- * @param {object=} options 配置项
- * @param {number=} options.step slider的step，每次移动的百分比，取值范围 [0-100]
- * @param {number=} [options.defaultValue=0] slider的默认百分比值，取值范围 [0-100]
- * @param {function=} options.onChange slider发生改变时返回对应的百分比，取值范围 [0-100]
- *
- * @example
- * #### html
- * ```html
- * <div class="weui-slider-box">
- *     <div id="slider" class="weui-slider">
- *         <div class="weui-slider__inner">
- *             <div class="weui-slider__track"></div>
- *             <div class="weui-slider__handler"></div>
- *         </div>
- *     </div>
- *     <div id="sliderValue" class="weui-slider-box__value"></div>
- * </div>
- * ```
- *
- * #### js
- * ```javascript
- * weui.slider('#slider', {
- *     step: 10,
- *     defaultValue: 40,
- *     onChange: function(percent){
- *         console.log(percent);
- *     }
- * });
- * ```
- */
-function slider(selector, options = {}) {
-  const $eles = $(selector);
-  options = $.extend({
-    step: undefined,
-    defaultValue: 0,
-    onChange: $.noop
-  }, options);
+function _normalize(options) {
+  const result = Object.create(null);
+  result.disabled = $.isBoolean(options.disabled) ? options.disabled : false;
+  result.vertical = $.isBoolean(options.vertical) ? options.vertical : false;
+  result.value = $.isNumber(options.value) ? options.value : 0;
+  result.min = $.isNumber(options.min) ? options.min : 0;
+  result.max = $.isNumber(options.max) ? options.max : 100;
+  result.step = $.isNumber(options.step) ? options.step : 1;
+  result.input = $.isFunction(options.input) ? options.input : $.noop;
+  result.change = $.isFunction(options.change) ? options.change : $.noop;
 
-  if (options.step !== undefined) {
-    options.step = parseFloat(options.step);
-    if (!options.step || options.step < 0) {
-      throw new Error('Slider step must be a positive number.');
+  result.value = result.value < result.min ? result.min : result.value;
+  result.value = result.value > result.max ? result.max : result.value;
+
+  // 控制 options.step 至少为 2 段
+  if ((result.max - result.min) / result.step < 2) throw new Error('options.step at least 2');
+
+  // value 值必须在 min 和 max 区间内
+  if (result.value < result.min || result.value > result.max) throw new RangeError('value out of range');
+
+  return result;
+}
+
+function Slider(selector, options) {
+  // 格式化参数
+  options = _normalize(options);
+
+  // 滑块对象
+  const $slider = $.isString(selector) ? $(selector) : selector;
+
+  // 内部参数
+  this.value = 0;
+  this.oldValue = 0;
+  this.sliderSize = 0;
+  this.dragging = false;
+  let wrapper = null;
+
+  // const $sliderInner = $slider.find('.weui-slider__inner');
+  const $sliderTrack = $slider.find('.weui-slider__track');
+  const $sliderHandler = $slider.find('.weui-slider__handler');
+
+  // 求 min、max、step 小数的情况下的最高精度
+  this.precision = () => {
+    let precisions = [options.min, options.max, options.step].map(item => {
+      let decimal = ('' + item).split('.')[1];
+      return decimal ? decimal.length : 0;
+    });
+    return Math.max.apply(null, precisions);
+  };
+
+  // 重新设定滑块的尺寸（重置计算参考尺寸）
+  this.resetSize = () => {
+    this.sliderSize = $slider.offset()[options.vertical ? 'height' : 'width'];
+  };
+
+  // 值改变
+  this.emitChange = () => {
+    $.apply(this, options.change, this.value);
+  };
+
+  this.updateValue = (val) => {
+    this.setValues(this.value);
+    this.applyStyle();
+  };
+
+  this.valueChanged = () => {
+    return this.value !== this.oldValue;
+  };
+
+  this.setValues = (val) => {
+    this.value = val;
+    $.apply(this, options.input, this.value);
+    if (this.valueChanged()) {
+      this.oldValue = this.value;
     }
-  }
-  if (options.defaultValue !== undefined && options.defaultValue < 0 || options.defaultValue > 100) {
-    throw new Error('Slider defaultValue must be >= 0 and <= 100.');
-  }
+  };
 
-  $eles.forEach((ele) => {
-    const $slider = $(ele);
-    const $sliderInner = $slider.find('.weui-slider__inner');
-    const $sliderTrack = $slider.find('.weui-slider__track');
-    const $sliderHandler = $slider.find('.weui-slider__handler');
+  // 更新滑块位置
+  this.barSize = () => {
+    return `${100 * (this.value - options.min) / (options.max - options.min)}%`;
+  };
 
-    const sliderLength = parseInt($.getStyle($sliderInner[0], 'width'), 10); // slider的长度
-    const sliderLeft = $sliderInner[0].offsetLeft; // slider相对于页面的offset
-    let handlerStartPos = 0; // handler起始位置
-    let handlerStartX = 0; // handler touchstart的X
-    let stepWidth; // 每个step的宽度
+  this.barStart = () => {
+    return '0%';
+  };
 
-    function getHandlerPos() {
-      let pos = $.getStyle($sliderHandler[0], 'left');
+  this.barStyle = () => {
+    return this.vertical
+      ? { height: this.barSize(), bottom: this.barStart() }
+      : { width: this.barSize(), left: this.barStart() };
+  };
 
-      if (/%/.test(pos)) {
-        pos = sliderLength * parseFloat(pos) / 100;
+  this.applyStyle = () => {
+    $sliderTrack.css(this.barStyle());
+  };
+
+  this.setPosition = (percent) => {
+    const targetValue = this.min + percent * (this.max - this.min) / 100;
+    wrapper.setPosition(percent);
+  };
+
+  // 点击直接定位事件
+  $slider.on({
+    click: (event) => {
+      if (options.disabled || this.dragging) return;
+      this.resetSize();
+
+      if (options.vertical) {
+        const sliderOffsetBottom = $slider[0].getBoundingClientRect().bottom;
+        this.setPosition((sliderOffsetBottom - event.clientY) / this.sliderSize * 100);
       }
       else {
-        pos = parseFloat(pos);
+        const sliderOffsetLeft = $slider[0].getBoundingClientRect().left;
+        this.setPosition((event.clientX - sliderOffsetLeft) / this.sliderSize * 100);
       }
-      return pos;
+      this.emitChange();
     }
-
-    function setHandler(distance) {
-      let dist; // handler的目标位置
-      let percent; // 所在位置的百分比
-
-      if (options.step) {
-        distance = Math.round(distance / stepWidth) * stepWidth;
-      }
-
-      dist = handlerStartPos + distance;
-      dist = dist < 0 ? 0 : dist > sliderLength ? sliderLength : dist;
-
-      percent = 100 * dist / sliderLength;
-
-      $sliderTrack.css({ width: percent + '%' });
-      $sliderHandler.css({ left: percent + '%' });
-      options.onChange.call(ele, percent);
-    }
-
-    if (options.step) {
-      stepWidth = sliderLength * options.step / 100;
-    }
-    if (options.defaultValue) {
-      setHandler(sliderLength * options.defaultValue / 100);
-    }
-
-    $slider
-    .on('click', function(evt) {
-      evt.preventDefault();
-
-      handlerStartPos = getHandlerPos();
-      setHandler(evt.pageX - sliderLeft - handlerStartPos);
-    });
-    $sliderHandler
-    .on('touchstart', function(evt) {
-      handlerStartPos = getHandlerPos();
-      handlerStartX = evt.changedTouches[0].clientX;
-    })
-    .on('touchmove', function(evt) {
-      evt.preventDefault();
-
-      setHandler(evt.changedTouches[0].clientX - handlerStartX);
-    });
   });
 
-  return this;
+  // 初始化
+  wrapper = sliderButton.call(this, $sliderHandler, options);
+
+  // 初始化值
+  this.setValues(options.value);
 }
+
+/**
+ * 滑块插件
+ * @param selector
+ * @param options
+ * @param {boolean} options.disabled 是否禁用
+ * @param {boolean} options.vertical 滑块是否为纵向类型（默认横向滑块）
+ * @param {number} options.value 默认值
+ * @param {number} options.min 最小值
+ * @param {number} options.max 最大值（至少为 min 的 2 倍）
+ * @param {number} options.step 步数（至少为 2）
+ * @param {function} options.input 数据改变时触发（使用鼠标拖曳时，活动过程实时触发）
+ * @param {function} options.change 值改变时触发（使用鼠标拖曳时，只在松开鼠标后触发）
+ */
+const slider = function(selector, options) {
+  return new Slider(selector, options);
+};
 
 export default slider;

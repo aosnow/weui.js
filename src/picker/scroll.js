@@ -123,7 +123,7 @@ $.fn.scroll = function(options) {
   }
   setTranslate($scrollable, translate);
 
-  const stop = (diff) => {
+  const stop = function(diff) {
     translate += diff;
 
     // 移动到最接近的那一行
@@ -227,7 +227,7 @@ $.fn.scroll = function(options) {
    * 因为现在没有移除匿名函数的方法，所以先暴力移除（offAll），并且改变$scrollable。
    */
   $scrollable = $this
-  .offAll()
+  .off()
   .on('touchstart', function(evt) {
     _start(evt.changedTouches[0].pageY);
   })

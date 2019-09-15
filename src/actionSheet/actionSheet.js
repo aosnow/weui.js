@@ -85,13 +85,13 @@ function actionSheet(menus = [], actions = [], options = {}) {
   function _hide(callback) {
     $actionSheet.addClass(options.isAndroid ? 'weui-animate-fade-out' : 'weui-animate-slide-down');
     $actionSheetMask
-    .addClass('weui-animate-fade-out')
-    .on('animationend webkitAnimationEnd', () => {
-      $actionSheetWrap.remove();
-      _sington = false;
-      options.onClose();
-      callback && callback();
-    });
+      .addClass('weui-animate-fade-out')
+      .on('animationend webkitAnimationEnd', () => {
+        $actionSheetWrap.remove();
+        _sington = false;
+        options.onClose();
+        callback && callback();
+      });
   }
 
   function hide(callback) {
@@ -100,21 +100,18 @@ function actionSheet(menus = [], actions = [], options = {}) {
 
   $('body').append($actionSheetWrap);
 
-  // 这里获取一下计算后的样式，强制触发渲染. fix IOS10下闪现的问题
-  $.getStyle($actionSheet[0], 'transform');
-
   $actionSheet.addClass(options.isAndroid ? 'weui-animate-fade-in' : 'weui-animate-slide-up');
   $actionSheetMask
-  .addClass('weui-animate-fade-in')
-  .on('click', () => {
-    hide();
-  });
-  $actionSheetWrap.find('.weui-actionsheet__menu').on('click', '.weui-actionsheet__cell', (evt) => {
+    .addClass('weui-animate-fade-in')
+    .on('click', () => {
+      hide();
+    });
+  $actionSheetWrap.find('.weui-actionsheet__menu').on('click', '.weui-actionsheet__cell', function(evt) {
     const index = $(this).index();
     menus[index].onClick.call(this, evt);
     hide();
   });
-  $actionSheetWrap.find('.weui-actionsheet__action').on('click', '.weui-actionsheet__cell', (evt) => {
+  $actionSheetWrap.find('.weui-actionsheet__action').on('click', '.weui-actionsheet__cell', function(evt) {
     const index = $(this).index();
     actions[index].onClick.call(this, evt);
     hide();

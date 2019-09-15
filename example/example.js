@@ -302,8 +302,13 @@ function setSlider() {
   // 普通slider
   const sliderValue = document.getElementById('sliderValue');
   weui.slider('#slider', {
-    defaultValue: 50,
-    onChange: function(percent) {
+    value: 50,
+    min: 0,
+    max: 200,
+    input: function(percent) {
+      sliderValue.innerHTML = Math.round(percent);
+    },
+    change: function(percent) {
       sliderValue.innerHTML = Math.round(percent);
       console.log(percent);
     }
@@ -313,8 +318,13 @@ function setSlider() {
   const sliderStepValue = document.getElementById('sliderStepValue');
   weui.slider('#sliderStep', {
     step: 10,
-    defaultValue: 40,
-    onChange: function(percent) {
+    value: 80,
+    min: 50,
+    max: 200,
+    input: function(percent) {
+      sliderStepValue.innerHTML = Math.round(percent);
+    },
+    change: function(percent) {
       sliderStepValue.innerHTML = Math.round(percent);
       console.log(percent);
     }
@@ -324,8 +334,11 @@ function setSlider() {
   const sliderBlockValue = document.getElementById('sliderBlockValue');
   weui.slider('#sliderBlock', {
     step: 100 / 3,
-    defaultValue: 33.333,
-    onChange: function(percent) {
+    value: 33.333,
+    input: function(percent) {
+      sliderBlockValue.innerHTML = Math.round(percent);
+    },
+    change: function(percent) {
       sliderBlockValue.innerHTML = Math.round(percent);
       console.log(percent);
     }
