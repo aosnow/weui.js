@@ -33,6 +33,9 @@ const BaseConfig = {
     }
   },
 
+  // 排除外部库（如使用CDN或引用本地JS库）
+  // externals: utils.DEBUG ? '' : [/^(zepto|core-js)/i],
+
   optimization: {
     minimize: !utils.DEBUG,
     runtimeChunk: false,

@@ -15,7 +15,7 @@
 */
 
 import $ from '../util/util';
-import tpl from './actionSheet.html';
+import tpl from './action-sheet.html';
 
 let _sington;
 

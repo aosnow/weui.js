@@ -3,11 +3,11 @@
   "version": "0.0.1",
   "author": "mudas",
   "license": "MIT",
-  "description": "weui.js",
+  "description": "A lot of modifications have been made by Weui. If you don't like it, please use the original version.",
   "main": "./dist/weui.min.js",
   "keywords": [
     "weui",
-    "jquery",
+    "template",
     "javascript",
     "zepto"
   ],

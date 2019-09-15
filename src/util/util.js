@@ -36,6 +36,22 @@ $.extend($, {
   }
 });
 
+/**
+ * 将指定选择器包装成 zepto 对象
+ * @param {string|HTMLElement} selector
+ */
+$.zepto = function(selector) {
+  if (typeof selector === 'string') {
+    return $(selector);
+  }
+  else if (selector instanceof HTMLElement) {
+    return $(selector);
+  }
+  else {
+    return selector;
+  }
+};
+
 $.isNumber = $.isNumeric;
 
 $.isString = function(value) {

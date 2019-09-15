@@ -15,7 +15,7 @@
 */
 
 import $ from '../util/util';
-import topTips from '../topTips/topTips';
+import topTips from '../top-tips/top-tips';
 
 function _findCellParent(ele) {
   if (!ele || !ele.classList) return null;

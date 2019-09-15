@@ -86,7 +86,8 @@ document.querySelector('#topTipsBtn').addEventListener('click', function() {
 /* halfScreenDialog */
 // 半屏窗口
 document.querySelector('#halfScreenBtn').addEventListener('click', function() {
-  weui.alert('good half-screen dialog');
+  const half = weui.halfScreen({ content: '.weui-half-screen__content' });
+  half.show();
 });
 
 /* picker */
