@@ -4,7 +4,6 @@
 // created: 2019/9/10 23:11
 // ------------------------------------------------------------------------------
 
-import pickerTpl from '@/picker/picker.html';
 import $ from '../util/util';
 import halfTpl from './half-screen.html';
 

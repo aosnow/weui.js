@@ -10,18 +10,18 @@ Compiler.config({
 });
 
 /* 判断系统 */
-function _detect(ua) {
-  if (!this.os) {
-    const os = this.os = {};
-    const android = ua.match(/(Android);?[\s\/]+([\d.]+)?/);
-    if (android) {
-      os.android = true;
-      os.version = android[2];
-    }
-  }
-}
-
-_detect.call($, navigator.userAgent);
+// function _detect(ua) {
+//   if (!this.os) {
+//     const os = this.os = {};
+//     const android = ua.match(/(Android);?[\s\/]+([\d.]+)?/);
+//     if (android) {
+//       os.android = true;
+//       os.version = android[2];
+//     }
+//   }
+// }
+//
+// _detect.call($, navigator.userAgent);
 
 // 扩展 $
 $.extend($, {
