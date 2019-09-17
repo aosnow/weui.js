@@ -21,14 +21,16 @@
   },
   "scripts": {
     "serve": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --colors --config build/webpack.example.config.js",
-    "build": "npm run clean && npm run lint && cross-env NODE_ENV=production  webpack --config ./build/webpack.example.config.js && cross-env REPORT=false node build/build.js",
-    "report": "npm run clean && npm run lint && cross-env NODE_ENV=production  webpack --config ./build/webpack.example.config.js && cross-env REPORT=true node build/build.js",
+    "build": "npm run clean && npm run lint && npm run style && cross-env NODE_ENV=production webpack --config ./build/webpack.example.config.js && cross-env REPORT=false node build/build.js",
+    "report": "npm run clean && npm run lint && cross-env NODE_ENV=production webpack --config ./build/webpack.example.config.js && cross-env REPORT=true node build/build.js",
+    "style": "cross-env NODE_ENV=production webpack --config ./build/webpack.style.config.js",
     "docs": "node ./build/docs.js",
     "deploy": "npm run docs && gh-pages -d docs",
     "lint": "eslint ./src/**/*.js",
     "clean": "rimraf ./dist",
     "start": "npm run serve",
-    "server": "node uploader-server/index.js"
+    "server": "node uploader-server/index.js",
+    "pub": "npm run build && npm publish --access=public"
   },
   "dependencies": {
     "template_js": "^0.8.0",
@@ -61,7 +63,9 @@
     "jsdoc-to-markdown": "^2.0.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
+    "mini-css-extract-plugin": "^0.8.0",
     "mocha": "^6.2.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "portfinder": "^1.0.24",
     "postcss-loader": "^3.0.0",
     "rimraf": "^2.5.4",
@@ -71,6 +75,8 @@
     "webpack": "^4.39.3",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.7",
-    "webpack-dev-server": "^3.8.0"
+    "webpack-dev-server": "^3.8.0",
+    "webpack-fix-style-only-entries": "^0.4.0",
+    "webpack-glob-entry": "^2.1.1"
   }
 }

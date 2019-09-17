@@ -209,7 +209,7 @@ $export($export.S, 'Object', { create: __webpack_require__("f1xp") });
 /***/ "4NbG":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"<%= className %>\">\r\n  <div class=weui-mask_transparent></div>\r\n  <div class=weui-toast>\r\n    <i class=\"weui-icon_toast weui-icon-success-no-circle\"></i>\r\n    <p class=weui-toast__content><%=content%></p>\r\n  </div>\r\n</div>\r\n";
+module.exports = "<div class=\"<%= className %>\">\r\n  <div class=\"weui-mask_transparent\"></div>\r\n  <div class=\"weui-toast\">\r\n    <i class=\"weui-icon_toast weui-icon-success-no-circle\"></i>\r\n    <p class=\"weui-toast__content\"><%=content%></p>\r\n  </div>\r\n</div>\r\n";
 
 /***/ }),
 
@@ -221,6 +221,20 @@ var $parseFloat = __webpack_require__("vwP0");
 // 18.2.4 parseFloat(string)
 $export($export.G + $export.F * (parseFloat != $parseFloat), { parseFloat: $parseFloat });
 
+
+/***/ }),
+
+/***/ "5P1O":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"weui-toptips weui-toptips_warn <%= className %>\" style=\"display: block;\"><%= content %></div>\r\n";
+
+/***/ }),
+
+/***/ "6Re7":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"half-screen-dialog <%= className %>\">\r\n  <div class=\"weui-mask\"></div>\r\n  <div class=\"weui-half-screen-dialog\">\r\n    <div class=\"weui-half-screen-dialog__hd\">\r\n      <div class=\"weui-half-screen-dialog__hd__side\">\r\n        <button class=\"weui-icon-btn weui-icon-btn_close weui-picker__btn\">关闭</button>\r\n      </div>\r\n      <div class=\"weui-half-screen-dialog__hd__main\">\r\n        <strong class=\"weui-half-screen-dialog__title\">标题</strong>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"weui-half-screen-dialog__bd\">\r\n      <div class=\"weui-half__bd\"></div>\r\n    </div>\r\n\r\n  </div>\r\n</div>\r\n";
 
 /***/ }),
 
@@ -237,7 +251,7 @@ module.exports = window.Zepto;
 /***/ "7071":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"weui-loading_toast <%= className %>\">\r\n  <div class=weui-mask_transparent></div>\r\n  <div class=weui-toast>\r\n    <i class=\"weui-loading weui-icon_toast\"></i>\r\n    <p class=weui-toast__content><%=content%></p>\r\n  </div>\r\n</div>\r\n";
+module.exports = "<div class=\"weui-loading_toast <%= className %>\">\r\n  <div class=\"weui-mask_transparent\"></div>\r\n  <div class=\"weui-toast\">\r\n    <i class=\"weui-loading weui-icon_toast\"></i>\r\n    <p class=\"weui-toast__content\"><%=content%></p>\r\n  </div>\r\n</div>\r\n";
 
 /***/ }),
 
@@ -713,6 +727,13 @@ module.exports = "/* Zepto v1.2.0 - zepto event ajax form ie - zeptojs.com/licen
 
 /***/ }),
 
+/***/ "IiB0":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"<% if(isAndroid){ %>weui-skin_android <% } %><%= className %>\">\r\n  <div class=\"weui-mask\"></div>\r\n  <div class=\"weui-actionsheet\">\r\n    <% if(!isAndroid && title){ %>\r\n    <div class=\"weui-actionsheet__title\">\r\n      <p class=\"weui-actionsheet__title-text\"><%= title %></p>\r\n    </div>\r\n    <% } %>\r\n    <div class=\"weui-actionsheet__menu\">\r\n      <% for(let i = 0; i < menus.length; i++){ %>\r\n      <div class=\"weui-actionsheet__cell\"><%= menus[i].label %></div>\r\n      <% } %>\r\n    </div>\r\n    <div class=\"weui-actionsheet__action\">\r\n      <% for(let j = 0; j < actions.length; j++){ %>\r\n      <div class=\"weui-actionsheet__cell\"><%= actions[j].label %></div>\r\n      <% } %>\r\n    </div>\r\n  </div>\r\n</div>\r\n";
+
+/***/ }),
+
 /***/ "JDBH":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -836,14 +857,7 @@ module.exports = $export;
 /***/ "PN0d":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"<%=className%>\">\r\n  <div class=weui-mask></div>\r\n  <div class=\"weui-dialog <% if(isAndroid){ %> weui-skin_android <% } %>\">\r\n    <% if(title){ %>\r\n    <div class=weui-dialog__hd><strong class=weui-dialog__title><%=title%></strong></div>\r\n    <% } %>\r\n    <div class=weui-dialog__bd><%=content%></div>\r\n    <div class=weui-dialog__ft>\r\n      <% for(let i = 0; i < buttons.length; i++){ %>\r\n      <a href=javascript:; class=\"weui-dialog__btn weui-dialog__btn_<%=buttons[i]['type']%>\"><%=buttons[i]['label']%></a>\r\n      <% } %>\r\n    </div>\r\n  </div>\r\n</div>\r\n";
-
-/***/ }),
-
-/***/ "QqVI":
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"weui-toptips weui-toptips_warn <%= className %>\" style=display:block><%= content %></div>\r\n";
+module.exports = "<div class=\"<%=className%>\">\r\n  <div class=\"weui-mask\"></div>\r\n  <div class=\"weui-dialog <% if(isAndroid){ %> weui-skin_android <% } %>\">\r\n    <% if(title){ %>\r\n    <div class=\"weui-dialog__hd\"><strong class=\"weui-dialog__title\"><%=title%></strong></div>\r\n    <% } %>\r\n    <div class=\"weui-dialog__bd\"><%=content%></div>\r\n    <div class=\"weui-dialog__ft\">\r\n      <% for(let i = 0; i < buttons.length; i++){ %>\r\n      <a href=\"javascript:;\" class=\"weui-dialog__btn weui-dialog__btn_<%=buttons[i]['type']%>\"><%=buttons[i]['label']%></a>\r\n      <% } %>\r\n    </div>\r\n  </div>\r\n</div>\r\n";
 
 /***/ }),
 
@@ -1038,7 +1052,7 @@ var store = global[SHARED] || (global[SHARED] = {});
 /***/ "e4pq":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=weui-picker__group>\r\n  <div class=weui-picker__mask></div>\r\n  <div class=weui-picker__indicator></div>\r\n  <div class=weui-picker__content></div>\r\n</div>\r\n";
+module.exports = "<div class=\"weui-picker__group\">\r\n  <div class=\"weui-picker__mask\"></div>\r\n  <div class=\"weui-picker__indicator\"></div>\r\n  <div class=\"weui-picker__content\"></div>\r\n</div>\r\n";
 
 /***/ }),
 
@@ -1114,13 +1128,6 @@ module.exports = function (index, length) {
 
 /***/ }),
 
-/***/ "he7t":
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"<% if(isAndroid){ %>weui-skin_android <% } %><%= className %>\">\r\n  <div class=weui-mask></div>\r\n  <div class=weui-actionsheet>\r\n    <% if(!isAndroid && title){ %>\r\n    <div class=weui-actionsheet__title>\r\n      <p class=weui-actionsheet__title-text><%= title %></p>\r\n    </div>\r\n    <% } %>\r\n    <div class=weui-actionsheet__menu>\r\n      <% for(let i = 0; i < menus.length; i++){ %>\r\n      <div class=weui-actionsheet__cell><%= menus[i].label %></div>\r\n      <% } %>\r\n    </div>\r\n    <div class=weui-actionsheet__action>\r\n      <% for(let j = 0; j < actions.length; j++){ %>\r\n      <div class=weui-actionsheet__cell><%= actions[j].label %></div>\r\n      <% } %>\r\n    </div>\r\n  </div>\r\n</div>\r\n";
-
-/***/ }),
-
 /***/ "hiV+":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1182,7 +1189,7 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 /***/ "liIb":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"<%= className %>\">\r\n    <div class=\"weui-mask\"></div>\r\n    <div class=\"weui-picker\">\r\n\r\n        <div class=\"weui-picker__hd\">\r\n            <a href=\"javascript:;\" data-action=\"cancel\" class=\"weui-picker__action\">取消</a>\r\n            <a href=\"javascript:;\" data-action=\"select\" class=\"weui-picker__action\" id=\"weui-picker-confirm\">确定</a>\r\n        </div>\r\n        <div class=\"weui-picker__bd\"></div>\r\n    </div>\r\n</div> -->\r\n\r\n<div class=\"<%= className %>\">\r\n  <div class=weui-mask></div>\r\n  <div class=\"weui-half-screen-dialog weui-picker\">\r\n    <div class=weui-half-screen-dialog__hd>\r\n      <div class=weui-half-screen-dialog__hd__side>\r\n        <button class=\"weui-icon-btn weui-icon-btn_close weui-picker__btn\">关闭</button>\r\n      </div>\r\n      <div class=weui-half-screen-dialog__hd__main>\r\n        <strong class=weui-half-screen-dialog__title>标题</strong>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=weui-half-screen-dialog__bd>\r\n      <div class=weui-picker__bd></div>\r\n    </div>\r\n\r\n    <div class=weui-half-screen-dialog__ft>\r\n      <a href=javascript:; class=\"weui-btn weui-btn_primary weui-picker__btn\" id=weui-picker-confirm data-action=select>确定</a>\r\n    </div>\r\n  </div>\r\n</div>\r\n";
+module.exports = "<!-- <div class=\"<%= className %>\">\r\n    <div class=\"weui-mask\"></div>\r\n    <div class=\"weui-picker\">\r\n\r\n        <div class=\"weui-picker__hd\">\r\n            <a href=\"javascript:;\" data-action=\"cancel\" class=\"weui-picker__action\">取消</a>\r\n            <a href=\"javascript:;\" data-action=\"select\" class=\"weui-picker__action\" id=\"weui-picker-confirm\">确定</a>\r\n        </div>\r\n        <div class=\"weui-picker__bd\"></div>\r\n    </div>\r\n</div> -->\r\n\r\n<div class=\"<%= className %>\">\r\n  <div class=\"weui-mask\"></div>\r\n  <div class=\"weui-half-screen-dialog weui-picker\">\r\n    <div class=\"weui-half-screen-dialog__hd\">\r\n      <div class=\"weui-half-screen-dialog__hd__side\">\r\n        <button class=\"weui-icon-btn weui-icon-btn_close weui-picker__btn\">关闭</button>\r\n      </div>\r\n      <div class=\"weui-half-screen-dialog__hd__main\">\r\n        <strong class=\"weui-half-screen-dialog__title\">标题</strong>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"weui-half-screen-dialog__bd\">\r\n      <div class=\"weui-picker__bd\"></div>\r\n    </div>\r\n\r\n    <div class=\"weui-half-screen-dialog__ft\">\r\n      <a href=\"javascript:;\" class=\"weui-btn weui-btn_primary weui-picker__btn\" id=\"weui-picker-confirm\" data-action=\"select\">确定</a>\r\n    </div>\r\n  </div>\r\n</div>\r\n";
 
 /***/ }),
 
@@ -1292,6 +1299,21 @@ zepto_default.a.extend(zepto_default.a, {
     return template_default()(tpl)(data);
   }
 });
+/**
+ * 将指定选择器包装成 zepto 对象
+ * @param {string|HTMLElement} selector
+ */
+
+zepto_default.a.zepto = function (selector) {
+  if (typeof selector === 'string') {
+    return zepto_default()(selector);
+  } else if (selector instanceof HTMLElement) {
+    return zepto_default()(selector);
+  } else {
+    return selector;
+  }
+};
+
 zepto_default.a.isNumber = zepto_default.a.isNumeric;
 
 zepto_default.a.isString = function (value) {
@@ -1777,11 +1799,11 @@ function loading_loading(content, options) {
 }
 
 /* harmony default export */ var loading_loading_0 = (loading_loading);
-// EXTERNAL MODULE: ./actionSheet/actionSheet.html
-var actionSheet = __webpack_require__("he7t");
-var actionSheet_default = /*#__PURE__*/__webpack_require__.n(actionSheet);
+// EXTERNAL MODULE: ./action-sheet/action-sheet.html
+var action_sheet = __webpack_require__("IiB0");
+var action_sheet_default = /*#__PURE__*/__webpack_require__.n(action_sheet);
 
-// CONCATENATED MODULE: ./actionSheet/actionSheet.js
+// CONCATENATED MODULE: ./action-sheet/action-sheet.js
 /*
 * Tencent is pleased to support the open source community by making WeUI.js available.
 *
@@ -1800,7 +1822,7 @@ var actionSheet_default = /*#__PURE__*/__webpack_require__.n(actionSheet);
 
 
 
-var actionSheet_sington;
+var action_sheet_sington;
 /**
  * actionsheet 弹出式菜单
  * @param {array} menus 上层的选项
@@ -1850,7 +1872,7 @@ var actionSheet_sington;
  */
 
 
-function actionSheet_actionSheet(menus, actions, options) {
+function actionSheet(menus, actions, options) {
   if (menus === void 0) {
     menus = [];
   }
@@ -1863,7 +1885,7 @@ function actionSheet_actionSheet(menus, actions, options) {
     options = {};
   }
 
-  if (actionSheet_sington) return actionSheet_sington;
+  if (action_sheet_sington) return action_sheet_sington;
   var isAndroid = util.os.android;
   options = util.extend({
     menus: menus,
@@ -1873,7 +1895,7 @@ function actionSheet_actionSheet(menus, actions, options) {
     isAndroid: isAndroid,
     onClose: util.noop
   }, options);
-  var $actionSheetWrap = util(util.render(actionSheet_default.a, options));
+  var $actionSheetWrap = util(util.render(action_sheet_default.a, options));
   var $actionSheet = $actionSheetWrap.find('.weui-actionsheet');
   var $actionSheetMask = $actionSheetWrap.find('.weui-mask');
 
@@ -1881,7 +1903,7 @@ function actionSheet_actionSheet(menus, actions, options) {
     $actionSheet.addClass(options.isAndroid ? 'weui-animate-fade-out' : 'weui-animate-slide-down');
     $actionSheetMask.addClass('weui-animate-fade-out').on('animationend webkitAnimationEnd', function () {
       $actionSheetWrap.remove();
-      actionSheet_sington = false;
+      action_sheet_sington = false;
       options.onClose();
       callback && callback();
     });
@@ -1906,17 +1928,17 @@ function actionSheet_actionSheet(menus, actions, options) {
     actions[index].onClick.call(this, evt);
     hide();
   });
-  actionSheet_sington = $actionSheetWrap[0];
-  actionSheet_sington.hide = hide;
-  return actionSheet_sington;
+  action_sheet_sington = $actionSheetWrap[0];
+  action_sheet_sington.hide = hide;
+  return action_sheet_sington;
 }
 
-/* harmony default export */ var actionSheet_actionSheet_0 = (actionSheet_actionSheet);
-// EXTERNAL MODULE: ./topTips/topTips.html
-var topTips = __webpack_require__("QqVI");
-var topTips_default = /*#__PURE__*/__webpack_require__.n(topTips);
+/* harmony default export */ var action_sheet_action_sheet = (actionSheet);
+// EXTERNAL MODULE: ./top-tips/top-tips.html
+var top_tips = __webpack_require__("5P1O");
+var top_tips_default = /*#__PURE__*/__webpack_require__.n(top_tips);
 
-// CONCATENATED MODULE: ./topTips/topTips.js
+// CONCATENATED MODULE: ./top-tips/top-tips.js
 /*
 * Tencent is pleased to support the open source community by making WeUI.js available.
 *
@@ -1960,7 +1982,7 @@ var _toptips = null;
  * });
  */
 
-function topTips_topTips(content, options) {
+function topTips(content, options) {
   if (options === void 0) {
     options = {};
   }
@@ -1983,7 +2005,7 @@ function topTips_topTips(content, options) {
     callback: util.noop,
     className: ''
   }, options);
-  var $topTips = util(util.render(topTips_default.a, options));
+  var $topTips = util(util.render(top_tips_default.a, options));
 
   function _hide(callback) {
     // _hide = $.noop; // 防止二次调用导致报错
@@ -2013,8 +2035,8 @@ function topTips_topTips(content, options) {
   return $topTips[0];
 }
 
-/* harmony default export */ var topTips_topTips_0 = (topTips_topTips);
-// CONCATENATED MODULE: ./searchBar/searchBar.js
+/* harmony default export */ var top_tips_top_tips = (topTips);
+// CONCATENATED MODULE: ./search-bar/search-bar.js
 /*
 * Tencent is pleased to support the open source community by making WeUI.js available.
 * 
@@ -2093,7 +2115,7 @@ function searchBar(selector) {
   return $eles;
 }
 
-/* harmony default export */ var searchBar_searchBar = (searchBar);
+/* harmony default export */ var search_bar = (searchBar);
 // CONCATENATED MODULE: ./tab/tab.js
 /*
 * Tencent is pleased to support the open source community by making WeUI.js available.
@@ -2436,7 +2458,7 @@ function showErrorTips(error) {
     var $ele = util(error.ele);
     var msg = error.msg;
     var tips = $ele.attr(msg + 'Tips') || $ele.attr('tips') || $ele.attr('placeholder');
-    if (tips) topTips_topTips_0(tips);
+    if (tips) top_tips_top_tips(tips);
     if (error.ele.type === 'checkbox' || error.ele.type === 'radio') return;
 
     var cellParent = _findCellParent(error.ele);
@@ -4555,15 +4577,176 @@ var slider = function slider(selector, options) {
 };
 
 /* harmony default export */ var slider_slider = (slider);
+// EXTERNAL MODULE: ./half-screen/half-screen.html
+var half_screen = __webpack_require__("6Re7");
+var half_screen_default = /*#__PURE__*/__webpack_require__.n(half_screen);
+
+// CONCATENATED MODULE: ./half-screen/index.js
+// ------------------------------------------------------------------------------
+// name: halfScreen
+// author: 喵大斯( mschool.tech )
+// created: 2019/9/10 23:11
+// ------------------------------------------------------------------------------
+
+
+ // 允许同时打开多个进行层叠的半屏窗口
+
+var _uid = 0;
+var PRE = 'half-screen-dialog';
+/**
+ * 获取目前指定 uid 的唯一识别编号
+ * @param {string} [pre] 前缀
+ * @param {number} [uid] 新的编号
+ * @private
+ */
+
+function _guid(pre, uid) {
+  pre = pre || PRE;
+  uid = uid || _uid + 1;
+  var id = pre + "_" + uid;
+
+  if (util("#" + id).size() > 0) {
+    id = _guid(pre, uid + 1);
+  }
+
+  return id;
+}
+/**
+ * 半屏自定义内容弹出窗口
+ * @param options 配置参数
+ * @param {string} options.title 窗口标题
+ * @param {string} options.container 指定窗口被添加到目标容器的 selector
+ * @param {string} options.className 自定义窗口样式类名
+ * @param {string|object} options.content 窗口主体内容的 selector；当类型为 object 时，可指定 {html:'',content:''}
+ * @param {function} options.close 窗口关闭时的回调方法
+ * @return {halfScreen}
+ *
+ * @example
+ * <script id="gender-content" type="text/html">
+ *  <div>
+ *    <input type="radio" name="gender" value="male" class="weui-check" id="r1" tips="请选择性别" required>
+ *    <input type="radio" name="gender" value="female" class="weui-check" id="r2">
+ *  </div>
+ * </script>
+ *
+ * @example
+ * // 常规用法（预置模板）
+ * const half = weui.halfScreen({
+ *    title: '标题',
+ *    content: '#gender-content'
+ * });
+ * half.show();
+ *
+ * // 自定义 html
+ * const half = weui.halfScreen({
+ *    content: {
+ *      html:`<div>
+ *        <h2>标题</h2>
+ *        <p>窗口内容</p>
+ *      </div>`
+ *    }
+ * });
+ * half.show();
+ */
+
+
+function halfScreen(options) {
+  // 配置选项
+  var defaults = util.extend({
+    id: '',
+    // 元素 id
+    title: false,
+    // 是否设定标题（设置成 ''/false/null 等都会隐藏 title）
+    container: 'body',
+    className: '',
+    content: '',
+    // html 内容（插入到 dialog 指定位置进行调度）
+    close: util.noop
+  }, options); // 若未指定 id 或指定了不存在或者没加入页面的元素 id，则自动生成新的 id
+
+  if (defaults.id.length === 0 || util("#" + defaults.id).size() <= 0) {
+    defaults.id = _guid();
+  } // --------------------------------------------------------------------------
+  //
+  // Class constructor
+  //
+  // --------------------------------------------------------------------------
+  // 模板内容
+
+
+  var $half = util(util.render(half_screen_default.a, defaults));
+  var $head = $half.find('.weui-half-screen-dialog__hd');
+  var $body = $half.find('.weui-half__bd');
+  var $mask = $half.find('.weui-mask');
+  var $dialog = $half.find('.weui-half-screen-dialog'); // 设定唯一 id
+
+  $half.attr({
+    id: defaults.id
+  }); // 设定窗体内容
+
+  var $content = util.zepto(defaults.content);
+  $body.append($content.clone().show()); // --------------------------------------------------------------------------
+  //
+  // Class methods
+  //
+  // --------------------------------------------------------------------------
+
+  /**
+   * 显示方法
+   */
+
+  this.show = function () {
+    util(defaults.container).append($half); // 更改标题
+
+    if (typeof defaults.title === 'string') {
+      $head.show();
+      $half.find('.weui-half-screen-dialog__title').html(defaults.title);
+    } else {
+      $head.hide();
+    }
+
+    $mask.addClass('weui-animate-fade-in');
+    $dialog.addClass('weui-animate-slide-up');
+  };
+  /**
+   * 隐藏方法
+   * @param {function} callback 在关闭动画完成后触发回调，这与 options.close 都会被触发
+   */
+
+
+  this.hide = function (callback) {
+    // 避免重复调用
+    if (util("#" + defaults.id).size() <= 0) return;
+    $mask.addClass('weui-animate-fade-out');
+    $dialog.addClass('weui-animate-slide-down').on('animationend webkitAnimationEnd', function () {
+      $half.remove();
+      util.apply($half, defaults.close);
+      util.apply($half, callback);
+    });
+  }; // --------------------------------------------------------------------------
+  //
+  // Event handlers
+  //
+  // --------------------------------------------------------------------------
+
+
+  $mask.on({
+    click: this.hide,
+    touchend: this.hide
+  });
+  return this;
+}
+
+/* harmony default export */ var half_screen_0 = (halfScreen);
 // CONCATENATED MODULE: ./weui.js
 /* concated harmony reexport dialog */__webpack_require__.d(__webpack_exports__, "dialog", function() { return dialog_dialog_0; });
 /* concated harmony reexport alert */__webpack_require__.d(__webpack_exports__, "alert", function() { return alert_alert_0; });
 /* concated harmony reexport confirm */__webpack_require__.d(__webpack_exports__, "confirm", function() { return confirm_confirm_0; });
 /* concated harmony reexport toast */__webpack_require__.d(__webpack_exports__, "toast", function() { return toast_toast_0; });
 /* concated harmony reexport loading */__webpack_require__.d(__webpack_exports__, "loading", function() { return loading_loading_0; });
-/* concated harmony reexport actionSheet */__webpack_require__.d(__webpack_exports__, "actionSheet", function() { return actionSheet_actionSheet_0; });
-/* concated harmony reexport topTips */__webpack_require__.d(__webpack_exports__, "topTips", function() { return topTips_topTips_0; });
-/* concated harmony reexport searchBar */__webpack_require__.d(__webpack_exports__, "searchBar", function() { return searchBar_searchBar; });
+/* concated harmony reexport actionSheet */__webpack_require__.d(__webpack_exports__, "actionSheet", function() { return action_sheet_action_sheet; });
+/* concated harmony reexport topTips */__webpack_require__.d(__webpack_exports__, "topTips", function() { return top_tips_top_tips; });
+/* concated harmony reexport searchBar */__webpack_require__.d(__webpack_exports__, "searchBar", function() { return search_bar; });
 /* concated harmony reexport tab */__webpack_require__.d(__webpack_exports__, "tab", function() { return tab_tab; });
 /* concated harmony reexport form */__webpack_require__.d(__webpack_exports__, "form", function() { return form_namespaceObject; });
 /* concated harmony reexport uploader */__webpack_require__.d(__webpack_exports__, "uploader", function() { return uploader_uploader; });
@@ -4571,6 +4754,7 @@ var slider = function slider(selector, options) {
 /* concated harmony reexport datePicker */__webpack_require__.d(__webpack_exports__, "datePicker", function() { return datePicker; });
 /* concated harmony reexport gallery */__webpack_require__.d(__webpack_exports__, "gallery", function() { return gallery_gallery_0; });
 /* concated harmony reexport slider */__webpack_require__.d(__webpack_exports__, "slider", function() { return slider_slider; });
+/* concated harmony reexport halfScreen */__webpack_require__.d(__webpack_exports__, "halfScreen", function() { return half_screen_0; });
 /*
 * Tencent is pleased to support the open source community by making WeUI.js available.
 *
@@ -4600,22 +4784,24 @@ var slider = function slider(selector, options) {
 
 
 
+
 var _default = {
   dialog: dialog_dialog_0,
   alert: alert_alert_0,
   confirm: confirm_confirm_0,
   toast: toast_toast_0,
   loading: loading_loading_0,
-  actionSheet: actionSheet_actionSheet_0,
-  topTips: topTips_topTips_0,
-  searchBar: searchBar_searchBar,
+  actionSheet: action_sheet_action_sheet,
+  topTips: top_tips_top_tips,
+  searchBar: search_bar,
   tab: tab_tab,
   form: form_namespaceObject,
   uploader: uploader_uploader,
   picker: picker_picker,
   datePicker: datePicker,
   gallery: gallery_gallery_0,
-  slider: slider_slider
+  slider: slider_slider,
+  halfScreen: half_screen_0
 };
 /* harmony default export */ var weui = __webpack_exports__["default"] = (_default);
 
@@ -4701,14 +4887,14 @@ module.exports = 1 / $parseFloat(__webpack_require__("Tnei") + '-0') !== -Infini
 /***/ "y1Mz":
 /***/ (function(module, exports) {
 
-module.exports = "<li class=\"weui-uploader__file weui-uploader__file_status\" data-id=\"<%= id %>\">\r\n  <div class=weui-uploader__file-content>\r\n    <i class=weui-loading style=width:30px;height:30px></i>\r\n  </div>\r\n</li>\r\n";
+module.exports = "<li class=\"weui-uploader__file weui-uploader__file_status\" data-id=\"<%= id %>\">\r\n  <div class=\"weui-uploader__file-content\">\r\n    <i class=\"weui-loading\" style=\"width: 30px;height: 30px;\"></i>\r\n  </div>\r\n</li>\r\n";
 
 /***/ }),
 
 /***/ "yhnj":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"weui-gallery <%= className %>\">\r\n  <span class=weui-gallery__img style=\"background-image:url(<%= url %>)\"></span>\r\n  <div class=weui-gallery__opr>\r\n    <a href=javascript: class=weui-gallery__del>\r\n      <i class=\"weui-icon-delete weui-icon_gallery-delete\"></i>\r\n    </a>\r\n  </div>\r\n</div>\r\n";
+module.exports = "<div class=\"weui-gallery <%= className %>\">\r\n  <span class=\"weui-gallery__img\" style=\"background-image: url(<%= url %>);\"></span>\r\n  <div class=\"weui-gallery__opr\">\r\n    <a href=\"javascript:\" class=\"weui-gallery__del\">\r\n      <i class=\"weui-icon-delete weui-icon_gallery-delete\"></i>\r\n    </a>\r\n  </div>\r\n</div>\r\n";
 
 /***/ })
 

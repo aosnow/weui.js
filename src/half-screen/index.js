@@ -31,7 +31,43 @@ function _guid(pre, uid) {
   return id;
 }
 
-// TODO: 完善半屏对话框组件
+/**
+ * 半屏自定义内容弹出窗口
+ * @param options 配置参数
+ * @param {string} options.title 窗口标题
+ * @param {string} options.container 指定窗口被添加到目标容器的 selector
+ * @param {string} options.className 自定义窗口样式类名
+ * @param {string|object} options.content 窗口主体内容的 selector；当类型为 object 时，可指定 {html:'',content:''}
+ * @param {function} options.close 窗口关闭时的回调方法
+ * @return {halfScreen}
+ *
+ * @example
+ * <script id="gender-content" type="text/html">
+ *  <div>
+ *    <input type="radio" name="gender" value="male" class="weui-check" id="r1" tips="请选择性别" required>
+ *    <input type="radio" name="gender" value="female" class="weui-check" id="r2">
+ *  </div>
+ * </script>
+ *
+ * @example
+ * // 常规用法（预置模板）
+ * const half = weui.halfScreen({
+ *    title: '标题',
+ *    content: '#gender-content'
+ * });
+ * half.show();
+ *
+ * // 自定义 html
+ * const half = weui.halfScreen({
+ *    content: {
+ *      html:`<div>
+ *        <h2>标题</h2>
+ *        <p>窗口内容</p>
+ *      </div>`
+ *    }
+ * });
+ * half.show();
+ */
 function halfScreen(options) {
 
   // 配置选项
@@ -75,7 +111,9 @@ function halfScreen(options) {
   //
   // --------------------------------------------------------------------------
 
-  // 显示与隐藏的方法
+  /**
+   * 显示方法
+   */
   this.show = () => {
     $(defaults.container).append($half);
 
@@ -92,6 +130,10 @@ function halfScreen(options) {
     $dialog.addClass('weui-animate-slide-up');
   };
 
+  /**
+   * 隐藏方法
+   * @param {function} callback 在关闭动画完成后触发回调，这与 options.close 都会被触发
+   */
   this.hide = (callback) => {
     // 避免重复调用
     if ($(`#${defaults.id}`).size() <= 0) return;

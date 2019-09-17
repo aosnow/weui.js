@@ -21,7 +21,7 @@ import toast from './toast/toast';
 import loading from './loading/loading';
 import actionSheet from './action-sheet/action-sheet';
 import topTips from './top-tips/top-tips';
-import searchBar from './search-bar/searchBar';
+import searchBar from './search-bar/search-bar';
 import tab from './tab/tab';
 import * as form from './form/form';
 import uploader from './uploader/uploader';

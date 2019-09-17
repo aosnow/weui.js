@@ -1,5 +1,6 @@
 // import 'weui';
 import weui from '@/weui';
+import 'style/weui.less';
 
 /* dialog */
 document.querySelector('#alertBtn').addEventListener('click', function() {

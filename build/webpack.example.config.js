@@ -28,7 +28,7 @@ const BaseConfig = {
     extensions: ['.js', '.json', '.css', '.less', '.scss'],
     alias: {
       '@': utils.resolve('src'),
-      docs: utils.resolve('docs'),
+      style: utils.resolve('style'),
       example: utils.resolve('example')
     }
   },
@@ -64,7 +64,6 @@ const BaseConfig = {
       },
 
       // css -----------------------------------------------------------
-      // 'style!css?modules&importLoaders=1&localIdentName=[name]__[local]_[hash:base64:5]!postcss!less'
       {
         test: /\.(le|c)ss$/,
         use: [
@@ -80,9 +79,10 @@ const BaseConfig = {
         test: /\.(html)(\?.*)?$/,
         loader: 'html-loader',
         options: {
-          minimize: true,
-          removeComments: false,
-          collapseWhitespace: false
+          minimize: false,
+          removeComments: true,
+          collapseWhitespace: true,
+          removeAttributeQuotes: false
         }
       }
     ]

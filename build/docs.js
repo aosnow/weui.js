@@ -11,29 +11,44 @@ paths.forEach(p => {
   utils.mkdirsSync(p);
 });
 
-const docs = glob.sync(path.join(__dirname, '../src/**/*.js'))
-                 // 排除不需要解析的列表
-                 .filter(function(file) {
-                   if (/util\/util.js/.test(file)) return false;
+const ExcludeDirs = ['util'];
 
-                   const basename = path.basename(file, '.js');
-                   const dirname = path.dirname(file).substr(path.dirname(file).lastIndexOf('/') + 1);
-                   return basename === dirname;
-                 })
-                 // 解析列表
-                 .map(function(file) {
-                   const basename = path.basename(file, '.js');
-                   const doc = jsdoc2md.renderSync({ files: file });
-                   const filepath = utils.resolve('docs', 'component', basename + '.md');
+function lastDirName(dir) {
+  const matched = dir.match(/[a-z-_]+[\\/]?$/i);
+  return matched ? matched[0].replace(/[\\/]$/, '') : '';
+}
 
-                   fs.writeFileSync(filepath, doc);
-                   console.log(`generate ${basename}.md ...`);
-                   return basename;
-                 })
-                 // 拼接解析结果
+function entryName(dir) {
+  const dirname = lastDirName(dir);
+  if (fs.existsSync(`${dir}index.js`)) return `${dir}index.js`;
+  if (fs.existsSync(`${dir}${dirname}.js`)) return `${dir}${dirname}.js`;
+}
+
+function filterDir(dir) {
+  const dirname = lastDirName(dir);
+  return dirname &&
+         ExcludeDirs.indexOf(dirname) === -1 &&
+         (fs.existsSync(`${dir}index.js`) || fs.existsSync(`${dir}${dirname}.js`));
+}
+
+function parseJsDoc(dir) {
+  const dirname = lastDirName(dir);
+  const entry = entryName(dir);
+  const doc = jsdoc2md.renderSync({ files: entry });
+  const filepath = utils.resolve('docs', 'component', dirname + '.md');
+
+  fs.writeFileSync(filepath, doc);
+  console.log(`generate ${dirname}.md ...`);
+  return dirname;
+}
+
+const dirs = glob.sync(utils.resolve('src/*/'));
+const docs = dirs.filter(filterDir)
+                 .map(parseJsDoc)
                  .reduce(function(doc, a) {
                    return `${doc}\n- [${a}](component/${a}.md)`;
                  }, '');
 
 const summary = `# Api for @mudas/weui.js\n${docs}`;
 fs.writeFileSync(utils.resolve('docs/README.md'), summary);
+console.log(`\ncompleted !`);
