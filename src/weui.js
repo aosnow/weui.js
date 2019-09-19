@@ -30,6 +30,7 @@ import gallery from './gallery/gallery';
 import slider from './slider/slider';
 
 import halfScreen from './half-screen';
+import optionPicker from './option-picker';
 
 const _default = {
   dialog,
@@ -47,7 +48,8 @@ const _default = {
   datePicker,
   gallery,
   slider,
-  halfScreen
+  halfScreen,
+  optionPicker
 };
 export default _default;
 export {
@@ -66,5 +68,6 @@ export {
   datePicker,
   gallery,
   slider,
-  halfScreen
+  halfScreen,
+  optionPicker
 };

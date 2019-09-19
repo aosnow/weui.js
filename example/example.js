@@ -87,8 +87,25 @@ document.querySelector('#topTipsBtn').addEventListener('click', function() {
 /* halfScreenDialog */
 // 半屏窗口
 document.querySelector('#halfScreenBtn').addEventListener('click', function() {
-  const half = weui.halfScreen({ content: '.weui-half-screen__content' });
+  const half = weui.halfScreen({
+    title: '登录并激活会员卡',
+    content: document.querySelector('#weui-half-screen__content').innerHTML
+  });
   half.show();
+});
+
+/* SimplePicker */
+// 简化的 Picker，适用于选项较少时收缩占用空间
+document.querySelector('#optionPickerBtn').addEventListener('click', function() {
+  weui.optionPicker({
+    id: 'gender-picker',
+    title: '选择性别',
+    type: 'checkbox',
+    options: [
+      { label: '男', value: 0 },
+      { label: '女', value: 1 }
+    ]
+  }).show();
 });
 
 /* picker */

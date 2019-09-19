@@ -34,8 +34,7 @@
 }
 
 .weui-half-screen-dialog__hd {
-  font-size: 8px;
-  height: 8em;
+  height: 0.8rem;
   display: flex;
   align-items: center;
 
@@ -70,43 +69,49 @@
   display: block;
   color: rgba(0, 0, 0, .9);
   font-weight: 700;
-  font-size: 15px;
+  font-size: .18rem;
 }
 
 .weui-half-screen-dialog__subtitle {
   display: block;
   color: rgba(0, 0, 0, .5);
-  font-size: 10px;
+  font-size: .12rem;
 }
 
 .weui-half-screen-dialog__bd {
   .hyphens();
   overflow-y: auto;
+  padding-bottom: .15rem;
 }
 
 .weui-half-screen-dialog__desc {
-  padding-top: 4px;
+  padding-top: .04rem;
   font-size: 17px;
   color: rgba(0, 0, 0, .9);
   line-height: 1.4;
 }
 
 .weui-half-screen-dialog__tips {
-  padding-top: 16px;
+  padding-top: .15rem;
   font-size: 14px;
   color: rgba(0, 0, 0, .3);
   line-height: 1.4;
 }
 
 .weui-half-screen-dialog__ft {
-  padding: 40px 24px 32px;
+  padding: .15rem 0 .3rem;
   text-align: center;
+  display: flex;
+
+  &.none{
+    display: none;
+  }
 
   .weui-btn {
     display: inline-block;
     vertical-align: top;
-    margin: 0 8px;
-    width: 120px;
+    margin: 0 .08rem;
+    flex: 1;
   }
 }
 

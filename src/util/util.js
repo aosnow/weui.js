@@ -1,5 +1,8 @@
 import $ from 'zepto';
 import Compiler from 'template_js';
+import DataModule from './data.mod';
+import DetectModule from './detect.mod';
+import TouchModule from './detect.mod';
 
 // 模板编译参数
 Compiler.config({
@@ -8,20 +11,6 @@ Compiler.config({
   compress: true,
   escape: false
 });
-
-/* 判断系统 */
-function _detect(ua) {
-  if (!this.os) {
-    const os = this.os = {};
-    const android = ua.match(/(Android);?[\s\/]+([\d.]+)?/);
-    if (android) {
-      os.android = true;
-      os.version = android[2];
-    }
-  }
-}
-
-_detect.call($, navigator.userAgent);
 
 // 扩展 $
 $.extend($, {
@@ -35,22 +24,6 @@ $.extend($, {
     return Compiler(tpl)(data);
   }
 });
-
-/**
- * 将指定选择器包装成 zepto 对象
- * @param {string|HTMLElement} selector
- */
-$.zepto = function(selector) {
-  if (typeof selector === 'string') {
-    return $(selector);
-  }
-  else if (selector instanceof HTMLElement) {
-    return $(selector);
-  }
-  else {
-    return selector;
-  }
-};
 
 $.isNumber = $.isNumeric;
 
@@ -69,5 +42,10 @@ $.isObject = function(value) {
 $.apply = function(thisArg, fn, ...args) {
   if ($.isFunction(fn)) fn.apply(thisArg, args);
 };
+
+// 模块扩展
+DataModule($); // 数据模块
+DetectModule($); // 系统环境检测模块
+TouchModule($); // 触摸设备事件支持模块
 
 export default $;

@@ -7,11 +7,13 @@
   <style>
   html, body {
     height: 100%;
+    font-size: 100px;
     background-color: #f8f8f8;
   }
 
   body {
     font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
+    font-size: 16px;
   }
 
   .item {
@@ -60,15 +62,18 @@
         <a href="javascript:;" id="actionSheetBtn" class="weui-btn weui-btn_default">ActionSheet</a>
         <a href="javascript:;" id="topTipsBtn" class="weui-btn weui-btn_default">TopTips</a>
         <a href="javascript:;" id="halfScreenBtn" class="weui-btn weui-btn_primary">HalfScreen</a>
+        <a href="javascript:;" id="optionPickerBtn" class="weui-btn weui-btn_primary">OptionPicker</a>
         <a href="javascript:;" id="pickerBtn" class="weui-btn weui-btn_default">Picker</a>
         <a href="javascript:;" id="datePickerBtn" class="weui-btn weui-btn_default">DatePicker</a>
         <a href="javascript:;" id="multiPickerBtn" class="weui-btn weui-btn_default">Multi-Picker</a>
         <a href="javascript:;" id="cascadePickerBtn" class="weui-btn weui-btn_default">Cascade-Picker</a>
       </div>
 
-      <div class="weui-half-screen__content" style="display: none;">
-        weui-half-screen__content
+      <script id="weui-half-screen__content" type="text/html">
+      <div class="weui-half-screen__content">
+        weui-half-screen__content：内容来源于模板
       </div>
+      </script>
 
       <div class="weui-tab__content">
         <div id="form">

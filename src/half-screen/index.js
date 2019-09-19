@@ -4,7 +4,6 @@
 // created: 2019/9/10 23:11
 // ------------------------------------------------------------------------------
 
-import pickerTpl from '@/picker/picker.html';
 import $ from '../util/util';
 import halfTpl from './half-screen.html';
 
@@ -34,11 +33,11 @@ function _guid(pre, uid) {
 /**
  * 半屏自定义内容弹出窗口
  * @param options 配置参数
- * @param {string} options.title 窗口标题
- * @param {string} options.container 指定窗口被添加到目标容器的 selector
- * @param {string} options.className 自定义窗口样式类名
- * @param {string|object} options.content 窗口主体内容的 selector；当类型为 object 时，可指定 {html:'',content:''}
- * @param {function} options.close 窗口关闭时的回调方法
+ * @param {string} [options.title] 窗口标题
+ * @param {string} [options.container] 指定窗口被添加到目标容器的 selector
+ * @param {string} [options.className] 自定义窗口样式类名
+ * @param {string|object} [options.content] 窗口主体内容的 selector；当类型为 object 时，可指定 {html:'',content:''}
+ * @param {function} [options.close] 窗口关闭时的回调方法
  * @return {halfScreen}
  *
  * @example
@@ -72,12 +71,17 @@ function halfScreen(options) {
 
   // 配置选项
   const defaults = $.extend({
-    id: '', // 元素 id
-    title: false, // 是否设定标题（设置成 ''/false/null 等都会隐藏 title）
+    id: '',
+    title: '',
     container: 'body',
     className: '',
     content: '', // html 内容（插入到 dialog 指定位置进行调度）
-    close: $.noop
+    close: $.noop,
+    buttons: [{
+      label: '确定',
+      type: 'primary',
+      onClick: $.noop
+    }]
   }, options);
 
   // 若未指定 id 或指定了不存在或者没加入页面的元素 id，则自动生成新的 id
@@ -94,6 +98,7 @@ function halfScreen(options) {
   // 模板内容
   const $half = $($.render(halfTpl, defaults));
   const $head = $half.find('.weui-half-screen-dialog__hd');
+  const $close = $half.find('.weui-icon-btn_close');
   const $body = $half.find('.weui-half__bd');
   const $mask = $half.find('.weui-mask');
   const $dialog = $half.find('.weui-half-screen-dialog');
@@ -102,7 +107,7 @@ function halfScreen(options) {
   $half.attr({ id: defaults.id });
 
   // 设定窗体内容
-  const $content = $.zepto(defaults.content);
+  const $content = $(defaults.content);
   $body.append($content.clone().show());
 
   // --------------------------------------------------------------------------
@@ -118,14 +123,9 @@ function halfScreen(options) {
     $(defaults.container).append($half);
 
     // 更改标题
-    if (typeof defaults.title === 'string') {
-      $head.show();
-      $half.find('.weui-half-screen-dialog__title').html(defaults.title);
-    }
-    else {
-      $head.hide();
-    }
+    $half.find('.weui-half-screen-dialog__title').html(defaults.title);
 
+    // 打开动画
     $mask.addClass('weui-animate-fade-in');
     $dialog.addClass('weui-animate-slide-up');
   };
@@ -138,8 +138,8 @@ function halfScreen(options) {
     // 避免重复调用
     if ($(`#${defaults.id}`).size() <= 0) return;
 
-    $mask.addClass('weui-animate-fade-out');
-    $dialog.addClass('weui-animate-slide-down')
+    $mask.removeClass('weui-animate-fade-in').addClass('weui-animate-fade-out');
+    $dialog.removeClass('weui-animate-slide-up').addClass('weui-animate-slide-down')
            .on('animationend webkitAnimationEnd', function() {
              $half.remove();
              $.apply($half, defaults.close);
@@ -156,6 +156,23 @@ function halfScreen(options) {
   $mask.on({
     click: this.hide,
     touchend: this.hide
+  });
+
+  $close.on('click', this.hide);
+
+  $half.on('click', '.weui-btn', (evt) => {
+    const element = evt.currentTarget;
+    const index = $(element).index();
+    if (defaults.buttons[index].onClick) {
+      const returnValue = defaults.buttons[index].onClick.call(this, evt);
+      if (returnValue !== false) this.hide();
+    }
+    else {
+      this.hide();
+    }
+  }).on('touchmove', (evt) => {
+    evt.stopPropagation();
+    evt.preventDefault();
   });
 
   return this;
