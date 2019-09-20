@@ -17,7 +17,7 @@ module.exports = function(entry, minimize, noHtml = false) {
   noHtml && BaseConfig.plugins.splice(1, 1);
 
   // 通过 npm run style 构建所有 css
-  BaseConfig.externals = ['style/weui.less'];
+  BaseConfig.externals = [/^(zepto)/i];
 
   BaseConfig.optimization.minimize = !!minimize;
   BaseConfig.context = utils.resolve('src');

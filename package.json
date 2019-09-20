@@ -1,16 +1,11 @@
 {
   "name": "@mudas/weui.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "mudas",
   "license": "MIT",
   "description": "A lot of modifications have been made by Weui. If you don't like it, please use the original version.",
   "main": "./dist/weui.min.js",
-  "keywords": [
-    "weui",
-    "template",
-    "javascript",
-    "zepto"
-  ],
+  "keywords": [ "weui", "template", "javascript", "zepto" ],
   "homepage": "https://github.com/aosnow/weui.js",
   "repository": {
     "type": "git",
@@ -19,10 +14,17 @@
   "bugs": {
     "url": "https://github.com/aosnow/weui.js/issues"
   },
+  "typings": "types/index.d.ts",
+  "files": [
+    "dist",
+    "types",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
     "serve": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --colors --config build/webpack.example.config.js",
     "build": "npm run clean && npm run lint && npm run style && cross-env NODE_ENV=production webpack --config ./build/webpack.example.config.js && cross-env REPORT=false node build/build.js",
-    "report": "npm run clean && npm run lint && cross-env NODE_ENV=production webpack --config ./build/webpack.example.config.js && cross-env REPORT=true node build/build.js",
+    "report": "npm run clean && cross-env NODE_ENV=production REPORT=true node build/build.js",
     "style": "cross-env NODE_ENV=production webpack --config ./build/webpack.style.config.js",
     "docs": "node ./build/docs.js",
     "deploy": "npm run docs && gh-pages -d docs",
@@ -32,9 +34,10 @@
     "server": "node uploader-server/index.js",
     "pub": "npm run build && npm publish --access=public"
   },
-  "dependencies": {
-    "template_js": "^0.8.0",
+  "peerDependencies": {
     "zepto": "^1.2.0"
+  },
+  "dependencies": {
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -71,12 +74,14 @@
     "rimraf": "^2.5.4",
     "script-loader": "^0.7.2",
     "style-loader": "^1.0.0",
+    "template_js": "^0.8.0",
     "thread-loader": "^2.1.3",
     "webpack": "^4.39.3",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.8.0",
     "webpack-fix-style-only-entries": "^0.4.0",
-    "webpack-glob-entry": "^2.1.1"
+    "webpack-glob-entry": "^2.1.1",
+    "zepto": "^1.2.0"
   }
 }
