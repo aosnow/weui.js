@@ -1,17 +1,20 @@
 <a name="slider"></a>
 
-## slider(selector, [options])
-slider slider滑块，单位是百分比。注意，因为需要获取slider的长度，所以必须要在slider可见的情况下来调用。
+## slider(selector, options)
+滑块插件
 
 **Kind**: global function  
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| selector | <code>string</code> |  | slider的selector |
-| [options] | <code>object</code> |  | 配置项 |
-| [options.step] | <code>number</code> |  | slider的step，每次移动的百分比，取值范围 [0-100] |
-| [options.defaultValue] | <code>number</code> | <code>0</code> | slider的默认百分比值，取值范围 [0-100] |
-| [options.onChange] | <code>function</code> |  | slider发生改变时返回对应的百分比，取值范围 [0-100] |
+| Param | Type | Description |
+| --- | --- | --- |
+| selector |  |  |
+| options |  |  |
+| options.disabled | <code>boolean</code> | 是否禁用 |
+| options.vertical | <code>boolean</code> | 滑块是否为纵向类型（默认横向滑块） |
+| options.value | <code>number</code> | 默认值 |
+| options.min | <code>number</code> | 最小值 |
+| options.max | <code>number</code> | 最大值（至少为 min 的 2 倍） |
+| options.step | <code>number</code> | 步数（至少为 2） |
+| options.input | <code>function</code> | 数据改变时触发（使用鼠标拖曳时，活动过程实时触发） |
+| options.change | <code>function</code> | 值改变时触发（使用鼠标拖曳时，只在松开鼠标后触发） |
 
-**Example**  
-#### html```html<div class="weui-slider-box">    <div id="slider" class="weui-slider">        <div class="weui-slider__inner">            <div class="weui-slider__track"></div>            <div class="weui-slider__handler"></div>        </div>    </div>    <div id="sliderValue" class="weui-slider-box__value"></div></div>```#### js```javascriptweui.slider('#slider', {    step: 10,    defaultValue: 40,    onChange: function(percent){        console.log(percent);    }});```

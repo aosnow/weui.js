@@ -19,15 +19,18 @@ import alert from './alert/alert';
 import confirm from './confirm/confirm';
 import toast from './toast/toast';
 import loading from './loading/loading';
-import actionSheet from './actionSheet/actionSheet';
-import topTips from './topTips/topTips';
-import searchBar from './searchBar/searchBar';
+import actionSheet from './action-sheet/action-sheet';
+import topTips from './top-tips/top-tips';
+import searchBar from './search-bar/search-bar';
 import tab from './tab/tab';
 import * as form from './form/form';
 import uploader from './uploader/uploader';
 import { picker, datePicker } from './picker/picker';
 import gallery from './gallery/gallery';
 import slider from './slider/slider';
+
+import halfScreen from './half-screen';
+import optionPicker from './option-picker';
 
 const _default = {
   dialog,
@@ -44,7 +47,9 @@ const _default = {
   picker,
   datePicker,
   gallery,
-  slider
+  slider,
+  halfScreen,
+  optionPicker
 };
 export default _default;
 export {
@@ -62,5 +67,7 @@ export {
   picker,
   datePicker,
   gallery,
-  slider
+  slider,
+  halfScreen,
+  optionPicker
 };

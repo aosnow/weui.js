@@ -1,5 +1,6 @@
 // import 'weui';
 import weui from '@/weui';
+import 'style/weui.less';
 
 /* dialog */
 document.querySelector('#alertBtn').addEventListener('click', function() {
@@ -86,7 +87,25 @@ document.querySelector('#topTipsBtn').addEventListener('click', function() {
 /* halfScreenDialog */
 // 半屏窗口
 document.querySelector('#halfScreenBtn').addEventListener('click', function() {
-  weui.alert('good half-screen dialog');
+  const half = weui.halfScreen({
+    title: '登录并激活会员卡',
+    content: document.querySelector('#weui-half-screen__content').innerHTML
+  });
+  half.show();
+});
+
+/* SimplePicker */
+// 简化的 Picker，适用于选项较少时收缩占用空间
+document.querySelector('#optionPickerBtn').addEventListener('click', function() {
+  weui.optionPicker({
+    id: 'gender-picker',
+    title: '选择性别',
+    type: 'checkbox',
+    options: [
+      { label: '男', value: 0 },
+      { label: '女', value: 1 }
+    ]
+  }).show();
 });
 
 /* picker */
@@ -302,8 +321,13 @@ function setSlider() {
   // 普通slider
   const sliderValue = document.getElementById('sliderValue');
   weui.slider('#slider', {
-    defaultValue: 50,
-    onChange: function(percent) {
+    value: 50,
+    min: 0,
+    max: 200,
+    input: function(percent) {
+      sliderValue.innerHTML = Math.round(percent);
+    },
+    change: function(percent) {
       sliderValue.innerHTML = Math.round(percent);
       console.log(percent);
     }
@@ -313,8 +337,13 @@ function setSlider() {
   const sliderStepValue = document.getElementById('sliderStepValue');
   weui.slider('#sliderStep', {
     step: 10,
-    defaultValue: 40,
-    onChange: function(percent) {
+    value: 80,
+    min: 50,
+    max: 200,
+    input: function(percent) {
+      sliderStepValue.innerHTML = Math.round(percent);
+    },
+    change: function(percent) {
       sliderStepValue.innerHTML = Math.round(percent);
       console.log(percent);
     }
@@ -324,8 +353,11 @@ function setSlider() {
   const sliderBlockValue = document.getElementById('sliderBlockValue');
   weui.slider('#sliderBlock', {
     step: 100 / 3,
-    defaultValue: 33.333,
-    onChange: function(percent) {
+    value: 33.333,
+    input: function(percent) {
+      sliderBlockValue.innerHTML = Math.round(percent);
+    },
+    change: function(percent) {
       sliderBlockValue.innerHTML = Math.round(percent);
       console.log(percent);
     }

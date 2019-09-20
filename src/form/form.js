@@ -15,7 +15,7 @@
 */
 
 import $ from '../util/util';
-import topTips from '../topTips/topTips';
+import topTips from '../top-tips/top-tips';
 
 function _findCellParent(ele) {
   if (!ele || !ele.classList) return null;
@@ -197,7 +197,7 @@ function validate(selector, callback = $.noop, options = {}) {
 function checkIfBlur(selector, options = {}) {
   const $eles = $(selector);
 
-  $eles.forEach((ele) => {
+  $eles.forEach(function(ele) {
     const $form = $(ele);
     $form.find('[required]')
          .on('blur', function() {

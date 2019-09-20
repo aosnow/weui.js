@@ -16,6 +16,9 @@ module.exports = function(entry, minimize, noHtml = false) {
   // 构建 js 库时不需要构建 html 页面
   noHtml && BaseConfig.plugins.splice(1, 1);
 
+  // 通过 npm run style 构建所有 css
+  BaseConfig.externals = [/^(zepto)/i];
+
   BaseConfig.optimization.minimize = !!minimize;
   BaseConfig.context = utils.resolve('src');
   BaseConfig.entry = entry;

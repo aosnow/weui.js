@@ -13,5 +13,5 @@ loading
 
 **Example**  
 ```js
-var loading = weui.loading('loading', {    className: 'custom-classname'});setTimeout(function () {    loading.hide(function() {         console.log('`loading` has been hidden');     });}, 3000);
+const loading = weui.loading('loading', {    className: 'custom-classname'});setTimeout(function () {    loading.hide(function() {         console.log('`loading` has been hidden');     });}, 3000);
 ```

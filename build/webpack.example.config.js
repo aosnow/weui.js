@@ -28,10 +28,13 @@ const BaseConfig = {
     extensions: ['.js', '.json', '.css', '.less', '.scss'],
     alias: {
       '@': utils.resolve('src'),
-      docs: utils.resolve('docs'),
+      style: utils.resolve('style'),
       example: utils.resolve('example')
     }
   },
+
+  // 排除外部库（如使用CDN或引用本地JS库）
+  // externals: utils.DEBUG ? '' : [/^(zepto|core-js)/i],
 
   optimization: {
     minimize: !utils.DEBUG,
@@ -41,6 +44,13 @@ const BaseConfig = {
 
   module: {
     rules: [
+
+      // zepto 不支持 commonjs 模式，用以下方式 export
+      {
+        test: require.resolve('zepto'),
+        use: ['exports-loader?window.Zepto', 'script-loader']
+      },
+
       // js babel es6 -----------------------------------------------------------
       {
         test: /\.m?jsx?$/,
@@ -54,7 +64,6 @@ const BaseConfig = {
       },
 
       // css -----------------------------------------------------------
-      // 'style!css?modules&importLoaders=1&localIdentName=[name]__[local]_[hash:base64:5]!postcss!less'
       {
         test: /\.(le|c)ss$/,
         use: [
@@ -70,9 +79,10 @@ const BaseConfig = {
         test: /\.(html)(\?.*)?$/,
         loader: 'html-loader',
         options: {
-          minimize: true,
-          removeComments: false,
-          collapseWhitespace: false
+          minimize: false,
+          removeComments: true,
+          collapseWhitespace: true,
+          removeAttributeQuotes: false
         }
       }
     ]
