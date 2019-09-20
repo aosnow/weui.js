@@ -103,7 +103,7 @@ export default function($) {
     if (!eventMap) return;
 
     if ('MSGesture' in window) {
-      gesture = new MSGesture();
+      gesture = new window.MSGesture();
       gesture.target = document.body;
 
       $(document)

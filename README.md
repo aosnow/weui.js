@@ -8,7 +8,7 @@
 
 [WeUI](https://github.com/aosnow/weui.git) 的轻量级 js 改版库（基于 `zepto v1.2.0`）。
 
-该 `@mudas/weui.js` 源于 `weui.js`，进行大量修改、优化、升级、加入新组件，转换大量老旧 `JS` 语法到 `ES6`，另外对 `webpack` 等构建配置升级到 `webpack v4.39.x`，若想使用原版请查看：https://github.com/Tencent/weui.js
+该 `@mudas/weui.js` 源于 `weui.js`，进行大量修改、优化、升级、加入新组件，转换大量老旧 `JS` 语法到 `ES6`，并将 `weui` 样式组件项目合并至该项目。另外对 `webpack` 等构建配置升级到 `webpack v4.39.x`，若想使用原版请查看：https://github.com/Tencent/weui.js
 
 ### 计划
 - 使用 scss 语法全部替换 less，增强 css 预处理能力
@@ -39,7 +39,7 @@ npm run build
 #### global 
 
 ```html
-<link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.1/weui.min.css">
+<link rel="stylesheet" href="weui.min.css">
 <script type="text/javascript" src="weui.min.js"></script>
 <script type="text/javascript">
     weui.alert('alert');
