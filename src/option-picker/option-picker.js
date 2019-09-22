@@ -54,14 +54,14 @@ class OptionPicker {
     return this.options.id && this.options.id.length > 0;
   }
 
-  _destroy = false;
+  _destroyed = false;
 
   /**
    * 是否已经注销
    * @return {boolean}
    */
-  get destroy() {
-    return this._destroy;
+  get destroyed() {
+    return this._destroyed;
   }
 
   _hidden = false;
@@ -197,8 +197,8 @@ class OptionPicker {
    * @private
    */
   _destroyHandler() {
-    if (this._destroy) return;
-    this._destroy = true;
+    if (this._destroyed) return;
+    this._destroyed = true;
 
     this.$body.remove();
     this._unsetup();
@@ -209,6 +209,7 @@ class OptionPicker {
     this.$optionGroup = null;
     this.$btnCancel = null;
     this.$btnEnter = null;
+    this.options = null;
   }
 
   enterHandler() {

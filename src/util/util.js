@@ -39,6 +39,10 @@ $.isObject = function(value) {
   return value !== null && value !== undefined && typeof value === 'object';
 };
 
+$.isPromise = function(value) {
+  return !!value && (typeof value === 'object' || typeof value === 'function') && typeof value.then === 'function';
+};
+
 $.apply = function(thisArg, fn, ...args) {
   if ($.isFunction(fn)) fn.apply(thisArg, args);
 };

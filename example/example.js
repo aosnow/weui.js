@@ -549,6 +549,21 @@ document.querySelector('#uploaderCustomFiles').addEventListener('click', functio
   });
 });
 
+// infinite-scroll
+weui.infiniteScroll({
+  target: '.weui-infinite-test',
+  stater: '.weui-infinite__state',
+  load() {
+    console.warn('load start...');
+    return new Promise(resolve => {
+      setTimeout(() => {
+        console.warn('load completed...');
+        resolve();
+      }, 3000);
+    });
+  }
+});
+
 // 支持免刷新页面热更新
 if (module.hot) {
   module.hot.accept('@/weui', function() {

@@ -5,22 +5,22 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
   <title>weui.js</title>
   <style>
-  html, body {
+  html, body{
     height: 100%;
     font-size: 100px;
     background-color: #f8f8f8;
   }
 
-  body {
+  body{
     font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
     font-size: 16px;
   }
 
-  .item {
+  .item{
     padding: 10px 0;
   }
 
-  .item__title {
+  .item__title{
     margin-bottom: 5px;
     padding-left: 15px;
     padding-right: 15px;
@@ -29,18 +29,18 @@
     font-size: 14px;
   }
 
-  .item__ctn {
+  .item__ctn{
     padding: 0 15px;
   }
 
-  .page_feedback {
+  .page_feedback{
     padding: 15px;
     overflow: auto;
     background-color: #ffffff;
   }
 
   /*fix fastclick很难点中的bug*/
-  label > * { pointer-events: none; }
+  label > *{ pointer-events: none; }
 
   </style>
 </head>
@@ -51,6 +51,7 @@
       <div class="weui-navbar__item">反馈</div>
       <div class="weui-navbar__item">表单</div>
       <div class="weui-navbar__item">上传</div>
+      <div class="weui-navbar__item">加载</div>
       <div class="weui-navbar__item">其它</div>
     </div>
     <div class="weui-tab__panel">
@@ -204,6 +205,13 @@
           <a id="uploaderCustomBtn" href="javascript:" class="weui-btn weui-btn_primary">上传</a>
         </div>
       </div>
+
+      <!--无限加载-->
+      <div class="weui-tab__content weui-infinite weui-infinite-test">
+        <div class="weui-infinite__list"></div>
+        <div class="weui-infinite__state"></div>
+      </div>
+
       <div class="weui-tab__content">
         <div class="item">
           <h4 class="item__title">搜索框</h4>
