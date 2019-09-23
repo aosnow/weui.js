@@ -19,7 +19,7 @@
 ```js
 weui.infiniteScroll({
   target: '.weui-infinite-test',
-  stater: '.weui-infinite__state', // 必须被包含在 target 内部
+  stater: '.weui-infinite__state', // stater 必须被包含在 target 内部
   load() {
     console.warn('load start...');
     return new Promise(resolve => {
