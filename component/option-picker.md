@@ -21,8 +21,7 @@
 
 **Example**  
 ```js
-// 单选案例
-weui.optionPicker({
+// 单选案例weui.optionPicker({
     id: 'gender-picker',
     title: '选择性别',
     type: 'radio', // 可省略
@@ -33,10 +32,7 @@ weui.optionPicker({
     complete: function(value){
       // value 为已选项的 value 的数组
     }
-  }).show();
-
-// 多选案例
-weui.optionPicker({
+  }).show();// 多选案例weui.optionPicker({
     id: 'muti-picker',
     title: '选择多个选项',
     type: 'checkbox',

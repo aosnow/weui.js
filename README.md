@@ -7,6 +7,7 @@
 - [form](component/form.md)
 - [gallery](component/gallery.md)
 - [half-screen](component/half-screen.md)
+- [infinite-scroll](component/infinite-scroll.md)
 - [loading](component/loading.md)
 - [option-picker](component/option-picker.md)
 - [picker](component/picker.md)
