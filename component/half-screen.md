@@ -25,16 +25,35 @@
 | [options.title] | <code>string</code> | 窗口标题 |
 | [options.container] | <code>string</code> | 指定窗口被添加到目标容器的 selector |
 | [options.className] | <code>string</code> | 自定义窗口样式类名 |
-| [options.content] | <code>string</code> &#124; <code>object</code> | 窗口主体内容的 selector；当类型为 object 时，可指定 {html:'',content:''} |
+| [options.content] | <code>string</code> &#124; <code>object</code> | 窗口主体内容的 selector，或者 html 内容 |
 | [options.close] | <code>function</code> | 窗口关闭时的回调方法 |
 
 **Example**  
 ```js
-<script id="gender-content" type="text/html"> <div>   <input type="radio" name="gender" value="male" class="weui-check" id="r1" tips="请选择性别" required>   <input type="radio" name="gender" value="female" class="weui-check" id="r2"> </div></script>
+<script id="gender-content" type="text/html">
+ <div>
+   <input type="radio" name="gender" value="male" class="weui-check" id="r1" tips="请选择性别" required>
+   <input type="radio" name="gender" value="female" class="weui-check" id="r2">
+ </div>
+</script>
 ```
 **Example**  
 ```js
-// 常规用法（预置模板）const half = weui.halfScreen({   title: '标题',   content: '#gender-content'});half.show();// 自定义 htmlconst half = weui.halfScreen({   content: {     html:`<div>       <h2>标题</h2>       <p>窗口内容</p>     </div>`   }});half.show();
+// 常规用法（预置模板）
+const half = weui.halfScreen({
+   title: '标题',
+   content: '#gender-content'
+});
+half.show();
+
+// 自定义 html
+const half = weui.halfScreen({
+   content: `<div>
+     <h2>标题</h2>
+     <p>窗口内容</p>
+   </div>`
+});
+half.show();
 ```
 <a name="show"></a>
 

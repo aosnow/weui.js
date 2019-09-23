@@ -17,18 +17,5 @@
 
 **Example**  
 ```js
-weui.infiniteScroll({
-  target: '.weui-infinite-test',
-  stater: '.weui-infinite__state', // stater 必须被包含在 target 内部
-  load() {
-    console.warn('load start...');
-    return new Promise(resolve => {
-      setTimeout(() => {
-        console.warn('load completed...');
-        // ... 将加载主体内容插入到 target 指定容器底部
-        resolve();
-      }, 3000);
-    });
-  }
-});
+weui.infiniteScroll({  target: '.weui-infinite-test',  stater: '.weui-infinite__state', // stater 必须被包含在 target 内部  load() {    console.warn('load start...');    return new Promise(resolve => {      setTimeout(() => {        console.warn('load completed...');        // ... 将加载主体内容插入到 target 指定容器底部        resolve();      }, 3000);    });  }});
 ```
