@@ -1,7 +1,7 @@
 // ------------------------------------------------------------------------------
 // name: InfiniteScroll
 // author: mudas( mschool.tech )
-// created: 2019.09.23 上午 1:11
+// created: 2019.09.23 上午 1:12
 // ------------------------------------------------------------------------------
 
 import $ from '../util/util';
@@ -14,7 +14,7 @@ class InfiniteScroll {
     loading: '...loading...', // 加载状态提示文本
     load: $.noop, // 条件满足时的加载方法
     immediate: true, // 是否在初始化时立即触发首次加载
-    threshold: 0.5 // 触发加载的距离阈值（0~1），默认 0.5
+    threshold: 1.0 // 触发加载的距离阈值（0~1），默认 1.0
   };
 
   // --------------------------------------------------------------------------
@@ -147,7 +147,7 @@ class InfiniteScroll {
     const { threshold } = this.options;
     const { intersectionRatio } = entries[0];
 
-    if (intersectionRatio === threshold) {
+    if (intersectionRatio >= threshold) {
       this._load();
     }
   }

@@ -550,6 +550,7 @@ document.querySelector('#uploaderCustomFiles').addEventListener('click', functio
 });
 
 // infinite-scroll
+let curIndex = 0;
 weui.infiniteScroll({
   target: '.weui-infinite-test',
   stater: '.weui-infinite__state',
@@ -558,6 +559,16 @@ weui.infiniteScroll({
     return new Promise(resolve => {
       setTimeout(() => {
         console.warn('load completed...');
+
+        curIndex += 10;
+        const target = document.querySelector('.weui-infinite__list');
+        for (let i = curIndex - 10; i < curIndex; i++) {
+          const el = document.createElement('div');
+          el.setAttribute('style', 'height:60px;line-height:60px;border-bottom:1px solid #ccc;text-align:center');
+          el.innerHTML = `<span>${i}</span>`;
+          target.append(el);
+        }
+
         resolve();
       }, 3000);
     });

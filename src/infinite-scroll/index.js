@@ -15,7 +15,7 @@ import InfiniteScroll from './InfiniteScroll';
  * 若 loading 被设置成 ''、false、null 等将不会更改状态提示文本
  * @param {function} options.load 条件满足时的加载方法（若需要异步加载请将加载主体包装成 Promise 返回）
  * @param {boolean} options.immediate 是否在初始化时立即触发首次加载（默认：true）
- * @param {number} options.threshold 触发加载的距离阈值（0~1）（默认：0.5）
+ * @param {number} options.threshold 触发加载的距离阈值（0~1）（默认：1.0）
  * @return {InfiniteScroll}
  *
  * @example
