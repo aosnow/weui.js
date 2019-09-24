@@ -3,7 +3,7 @@ import alert from './alert/alert';
 import confirm from './confirm/confirm';
 import toast from './toast/toast';
 import loading from './loading/loading';
-import actionSheet from './action-sheet/action-sheet';
+import actionSheet from './action-sheet';
 import topTips from './top-tips/top-tips';
 import searchBar from './search-bar/search-bar';
 import tab from './tab/tab';

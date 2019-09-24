@@ -11,7 +11,8 @@ class InfiniteScroll {
   static DefaultOptions = {
     target: 'body', // 需要开启无限滚动的容器
     stater: '', // 用于显示当前状态的容器（一般处于 target 的底部）
-    loading: '...loading...', // 加载状态提示文本
+    loading: '- loading -', // 加载状态提示文本
+    nodata: '- 暂无更多数据 -', // 没有数据后，暂停监听
     load: $.noop, // 条件满足时的加载方法
     immediate: true, // 是否在初始化时立即触发首次加载
     threshold: 1.0 // 触发加载的距离阈值（0~1），默认 1.0
@@ -34,6 +35,10 @@ class InfiniteScroll {
   //
   // --------------------------------------------------------------------------
 
+  // ----------------------------------------
+  // loading
+  // ----------------------------------------
+
   _loading = false;
 
   /**
@@ -44,6 +49,10 @@ class InfiniteScroll {
     return this._loading;
   }
 
+  // ----------------------------------------
+  // destroyed
+  // ----------------------------------------
+
   _destroyed = false;
 
   /**
@@ -52,6 +61,20 @@ class InfiniteScroll {
    */
   get destroyed() {
     return this._destroyed;
+  }
+
+  // ----------------------------------------
+  // noDataed
+  // ----------------------------------------
+
+  _noDataed = false;
+
+  /**
+   * 当前控制器是否处于无数据状态
+   * @return {boolean}
+   */
+  get noDataed() {
+    return this._noDataed;
   }
 
   // --------------------------------------------------------------------------
@@ -100,12 +123,31 @@ class InfiniteScroll {
   }
 
   /**
+   * 设置当前状态到没有更多数据
+   */
+  nodata(value = true) {
+    this._noDataed = value;
+
+    // 若 loading 被设置成 ''、false、null 等将不会更改状态提示文本
+    if (this.options.nodata && this._noDataed) {
+      this.$stater.html(this._noDataed ? this.options.nodata : '');
+    }
+
+    // 开启和关闭观察器（在加载过程中临时关闭观察器，避免重复派发）
+    const method = this._noDataed ? 'unobserve' : 'observe';
+    this.observer[method](this.$stater.get(0));
+  }
+
+  /**
    * 设置当前加载状态
    * @param {boolean} value
    * @private
    */
-  _setState(value) {
+  _setState(value = true) {
     this._loading = value;
+
+    // 若已经处于无数据状态，则无须处理以下逻辑
+    if (this._noDataed) return;
 
     // 若 loading 被设置成 ''、false、null 等将不会更改状态提示文本
     if (this.options.loading) {
@@ -113,7 +155,7 @@ class InfiniteScroll {
     }
 
     // 开启和关闭观察器（在加载过程中临时关闭观察器，避免重复派发）
-    const method = this._loading ? 'unobserve' : 'observe';
+    const method = this._loading || this._noDataed ? 'unobserve' : 'observe';
     this.observer[method](this.$stater.get(0));
   }
 

@@ -1,5 +1,6 @@
-<div class="<% if(isAndroid){ %>weui-skin_android <% } %><%= className %>">
+<div class="weui-actionsheet__wrapper <% if(isAndroid){ %>weui-skin_android<% } %> <%= className %>">
   <div class="weui-mask"></div>
+  <div class="weui-freeze"></div>
   <div class="weui-actionsheet">
     <% if(!isAndroid && title){ %>
     <div class="weui-actionsheet__title">

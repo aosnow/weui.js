@@ -11,7 +11,7 @@ paths.forEach(p => {
   utils.mkdirsSync(p);
 });
 
-const ExcludeDirs = ['util'];
+const ExcludeDirs = ['util', 'common'];
 
 function lastDirName(dir) {
   const matched = dir.match(/[a-z-_]+[\\/]?$/i);

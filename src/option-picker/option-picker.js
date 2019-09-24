@@ -170,9 +170,8 @@ class OptionPicker {
   /**
    * 隐藏窗体
    * @param {function} [callback] 额外的回调方法
-   * @param {boolean} [destroy] 是否在关闭窗口的同时销毁窗体（默认：false），窗体若销毁，则无法重复利用减少资源开销
    */
-  hide(callback, destroy = false) {
+  hide(callback) {
     // 避免重复调用
     if (this._hidden) return;
     this._hidden = true;
