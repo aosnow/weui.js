@@ -30,30 +30,11 @@
 
 **Example**  
 ```js
-<script id="gender-content" type="text/html">
- <div>
-   <input type="radio" name="gender" value="male" class="weui-check" id="r1" tips="请选择性别" required>
-   <input type="radio" name="gender" value="female" class="weui-check" id="r2">
- </div>
-</script>
+<script id="gender-content" type="text/html"> <div>   <input type="radio" name="gender" value="male" class="weui-check" id="r1" tips="请选择性别" required>   <input type="radio" name="gender" value="female" class="weui-check" id="r2"> </div></script>
 ```
 **Example**  
 ```js
-// 常规用法（预置模板）
-const half = weui.halfScreen({
-   title: '标题',
-   content: '#gender-content'
-});
-half.show();
-
-// 自定义 html
-const half = weui.halfScreen({
-   content: `<div>
-     <h2>标题</h2>
-     <p>窗口内容</p>
-   </div>`
-});
-half.show();
+// 常规用法（预置模板）const half = weui.halfScreen({   title: '标题',   content: '#gender-content'});half.show();// 自定义 htmlconst half = weui.halfScreen({   content: `<div>     <h2>标题</h2>     <p>窗口内容</p>   </div>`});half.show();
 ```
 <a name="show"></a>
 

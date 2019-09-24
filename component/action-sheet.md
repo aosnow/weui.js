@@ -21,63 +21,4 @@
 | [options.close] | <code>function</code> | actionSheet关闭后的回调 |
 
 **Example**  
-### 常规用法
-```javascript
-const asheet = weui.actionSheet({
-  title: '请选择需要的操作',
-  menus: [
-    {
-      label: '确定',
-      handler: function() {
-        console.log('确定');
-      }
-    },
-    {
-      label: '取消',
-      handler: function() {
-        console.log('取消');
-      }
-    }
-  ],
-  actions: [
-    {
-      label: '取消',
-      handler: function() {
-        console.log('取消');
-      }
-    }
-  ]
-});
-asheet.open();
-```
-
-### 异步 Promise 用法
-```javascript
-const asheet = weui.actionSheet({
-  title: '',
-  menus: [
-    {
-      label: '<i class="weui-icon-success weui-icon_msg">这是个图标</i>',
-      handler: function() {
-        asheet.freeze(); // 冻结操作，异步场景下可阻止重复触发动作
-        return new Promise(resolve => {
-          setTimeout(() => {
-            console.log('客服电话');
-            asheet.freeze(false);
-            resolve();
-          }, 2000);
-        });
-      }
-    }
-  ],
-  actions: [
-    {
-      label: '取消',
-      handler: function() {
-        console.log('取消');
-      }
-    }
-  ]
-});
-asheet.open();
-```
+### 常规用法```javascriptconst asheet = weui.actionSheet({  title: '请选择需要的操作',  menus: [    {      label: '确定',      handler: function() {        console.log('确定');      }    },    {      label: '取消',      handler: function() {        console.log('取消');      }    }  ],  actions: [    {      label: '取消',      handler: function() {        console.log('取消');      }    }  ]});asheet.open();```### 异步 Promise 用法```javascriptconst asheet = weui.actionSheet({  title: '',  menus: [    {      label: '<i class="weui-icon-success weui-icon_msg">这是个图标</i>',      handler: function() {        asheet.freeze(); // 冻结操作，异步场景下可阻止重复触发动作        return new Promise(resolve => {          setTimeout(() => {            console.log('客服电话');            asheet.freeze(false);            resolve();          }, 2000);        });      }    }  ],  actions: [    {      label: '取消',      handler: function() {        console.log('取消');      }    }  ]});asheet.open();```

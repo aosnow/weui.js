@@ -17,26 +17,4 @@
 | options.threshold | <code>number</code> | 触发加载的距离阈值（0~1）（默认：1.0） |
 
 **Example**  
-```html
-<div class="weui-tab__content weui-infinite weui-infinite-test">
-  <div class="weui-infinite__list"></div>
-  <div class="weui-infinite__state"></div>
-</div>
-```
-
-```javascript
-weui.infiniteScroll({
-  target: '.weui-infinite-test',
-  stater: '.weui-infinite__state', // stater 必须被包含在 target 内部
-  load() {
-    console.warn('load start...');
-    return new Promise(resolve => {
-      setTimeout(() => {
-        console.warn('load completed...');
-        // ... 将加载主体内容插入到 target 指定容器底部
-        resolve();
-      }, 3000);
-    });
-  }
-});
-```
+```html<div class="weui-tab__content weui-infinite weui-infinite-test">  <div class="weui-infinite__list"></div>  <div class="weui-infinite__state"></div></div>``````javascriptweui.infiniteScroll({  target: '.weui-infinite-test',  stater: '.weui-infinite__state', // stater 必须被包含在 target 内部  load() {    console.warn('load start...');    return new Promise(resolve => {      setTimeout(() => {        console.warn('load completed...');        // ... 将加载主体内容插入到 target 指定容器底部        resolve();      }, 3000);    });  }});```
