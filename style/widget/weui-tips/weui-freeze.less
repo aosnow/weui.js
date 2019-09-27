@@ -1,0 +1,20 @@
+// ------------------------------------------------------------------------------
+// name: weui-freeze
+// author: mudas( mschool.tech )
+// created: 2019/9/24
+// ------------------------------------------------------------------------------
+
+@import "../../base/fn";
+
+// 用于实现窗体冻结无法交互操作
+
+.weui-freeze {
+  position: fixed;
+  z-index: @freeze-index;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: none;
+  background: transparent;
+}

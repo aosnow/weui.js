@@ -1,6 +1,6 @@
 {
   "name": "@mudas/weui.js",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "author": "mudas",
   "license": "MIT",
   "description": "A lot of modifications have been made by Weui. If you don't like it, please use the original version.",
@@ -27,7 +27,7 @@
     "report": "npm run clean && cross-env NODE_ENV=production REPORT=true node build/build.js",
     "style": "cross-env NODE_ENV=production webpack --config ./build/webpack.style.config.js",
     "docs": "node ./build/docs.js",
-    "deploy": "npm run docs && gh-pages -d docs",
+    "deploy": "npm run docs && node ./build/deploy.js",
     "lint": "eslint ./src/**/*.js",
     "clean": "rimraf ./dist",
     "start": "npm run serve",

@@ -17,7 +17,7 @@
 
 .weui-dialog {
   position: fixed;
-  z-index: 5000;
+  z-index: @dialog-index;
   top: 50%;
   left: 16px;
   right: 16px;
@@ -69,8 +69,7 @@
 .weui-dialog__btn {
   display: block;
   flex: 1;
-  color: @weuiDialogLinkColor;
-  font-weight: 700;
+  color: #888888;
   text-decoration: none;
   .setTapColor();
 
@@ -93,7 +92,11 @@
 }
 
 .weui-dialog__btn_default {
-  color: @weuiTextColorTitle;
+  color: @weuiTextColorDisabled;
+}
+
+.weui-dialog__btn_primary {
+  color: @weuiDialogLinkColor;
 }
 
 .weui-skin_android {

@@ -39,8 +39,34 @@ $.isObject = function(value) {
   return value !== null && value !== undefined && typeof value === 'object';
 };
 
+$.isPromise = function(value) {
+  return !!value && (typeof value === 'object' || typeof value === 'function') && typeof value.then === 'function';
+};
+
+// callback 包装器
 $.apply = function(thisArg, fn, ...args) {
-  if ($.isFunction(fn)) fn.apply(thisArg, args);
+  if ($.isFunction(fn)) {
+    return fn.apply(thisArg, args);
+  }
+  return fn;
+};
+
+// promise 包装器
+$.assigner = function(returnValue) {
+  return new Promise((resolve, reject) => {
+    try {
+      if ($.isPromise(returnValue)) {
+        returnValue.then(data => resolve(data))
+                   .catch(reason => reject(reason));
+      }
+      else {
+        resolve(returnValue);
+      }
+    }
+    catch (e) {
+      reject(e);
+    }
+  });
 };
 
 // 模块扩展

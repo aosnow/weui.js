@@ -1,125 +1,78 @@
-/*
-* Tencent is pleased to support the open source community by making WeUI.js available.
-*
-* Copyright (C) 2017 THL A29 Limited, a Tencent company. All rights reserved.
-*
-* Licensed under the MIT License (the "License"); you may not use this file except in compliance
-* with the License. You may obtain a copy of the License at
-*
-*       http://opensource.org/licenses/MIT
-*
-* Unless required by applicable law or agreed to in writing, software distributed under the License is
-* distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-* either express or implied. See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+// ------------------------------------------------------------------------------
+// name: action-sheet
+// author: mudas( mschool.tech )
+// created: 2019/9/23 20:34
+// ------------------------------------------------------------------------------
 
 import $ from '../util/util';
-import tpl from './action-sheet.html';
+import SlideDialog from '@/common/SlideDialog';
+import TplSheet from './action-sheet.html';
 
-let _sington;
+class ActionSheet extends SlideDialog {
 
-/**
- * actionsheet 弹出式菜单
- * @param {array} menus 上层的选项
- * @param {string} menus[].label 选项的文字
- * @param {function} menus[].onClick 选项点击时的回调
- *
- * @param {array} actions 下层的选项
- * @param {string} actions[].label 选项的文字
- * @param {function} actions[].onClick 选项点击时的回调
- *
- * @param {object=} options 配置项
- * @param {string=} options.title actionSheet的title，如果isAndroid=true，则不会显示
- * @param {string=} options.className 自定义类名
- * @param {function=} [options.onClose] actionSheet关闭后的回调
- *
- * @example
- * weui.actionSheet([
- *     {
- *         label: '拍照',
- *         onClick: function () {
- *             console.log('拍照');
- *         }
- *     }, {
- *         label: '从相册选择',
- *         onClick: function () {
- *             console.log('从相册选择');
- *         }
- *     }, {
- *         label: '其他',
- *         onClick: function () {
- *             console.log('其他');
- *         }
- *     }
- * ], [
- *     {
- *         label: '取消',
- *         onClick: function () {
- *             console.log('取消');
- *         }
- *     }
- * ], {
- *     className: 'custom-classname',
- *     onClose: function(){
- *         console.log('关闭');
- *     }
- * });
- */
-function actionSheet(menus = [], actions = [], options = {}) {
-  if (_sington) return _sington;
-
-  const isAndroid = $.os.android;
-  options = $.extend({
-    menus: menus,
-    actions: actions,
+  static DefaultOptions = {
     title: '',
-    className: '',
-    isAndroid: isAndroid,
-    onClose: $.noop
-  }, options);
-  const $actionSheetWrap = $($.render(tpl, options));
-  const $actionSheet = $actionSheetWrap.find('.weui-actionsheet');
-  const $actionSheetMask = $actionSheetWrap.find('.weui-mask');
+    menus: [],
+    actions: [],
+    isAndroid: !!$.os.android, // undefined 值合并 options 将被移除
+    wrapper: { selector: '.weui-actionsheet__wrapper' },
+    dialog: { selector: '.weui-actionsheet' }
+  };
 
-  function _hide(callback) {
-    $actionSheet.addClass(options.isAndroid ? 'weui-animate-fade-out' : 'weui-animate-slide-down');
-    $actionSheetMask
-      .addClass('weui-animate-fade-out')
-      .on('animationend webkitAnimationEnd', () => {
-        $actionSheetWrap.remove();
-        _sington = false;
-        options.onClose();
-        callback && callback();
-      });
+  // --------------------------------------------------------------------------
+  //
+  // Class constructor
+  //
+  // --------------------------------------------------------------------------
+
+  constructor(options) {
+    super($.extend(true, {}, ActionSheet.DefaultOptions, options), TplSheet);
   }
 
-  function hide(callback) {
-    _hide(callback);
-  }
+  // --------------------------------------------------------------------------
+  //
+  // Class methods
+  //
+  // --------------------------------------------------------------------------
 
-  $('body').append($actionSheetWrap);
+  /**
+   * 安装组件（如处理回调等）
+   * @private
+   */
+  setup() {
+    super.setup();
 
-  $actionSheet.addClass(options.isAndroid ? 'weui-animate-fade-in' : 'weui-animate-slide-up');
-  $actionSheetMask
-    .addClass('weui-animate-fade-in')
-    .on('click', () => {
-      hide();
+    this.$menus = this.$wrapper.find('.weui-actionsheet__menu');
+    this.$actions = this.$wrapper.find('.weui-actionsheet__action');
+
+    this.$menus.on('click tap', '.weui-actionsheet__cell', event => {
+      const element = event.currentTarget;
+      const index = $(element).index();
+      $.assigner($.apply(element, this.options.menus[index].handler, event))
+       .finally(() => this.close());
     });
-  $actionSheetWrap.find('.weui-actionsheet__menu').on('click', '.weui-actionsheet__cell', function(evt) {
-    const index = $(this).index();
-    menus[index].onClick.call(this, evt);
-    hide();
-  });
-  $actionSheetWrap.find('.weui-actionsheet__action').on('click', '.weui-actionsheet__cell', function(evt) {
-    const index = $(this).index();
-    actions[index].onClick.call(this, evt);
-    hide();
-  });
 
-  _sington = $actionSheetWrap[0];
-  _sington.hide = hide;
-  return _sington;
+    this.$actions.on('click tap', '.weui-actionsheet__cell', event => {
+      const element = event.currentTarget;
+      const index = $(element).index();
+      $.assigner($.apply(element, this.options.actions[index].handler, event))
+       .finally(() => this.close());
+    });
+  }
+
+  /**
+   * 卸载组件（如处理回调等）
+   * @private
+   */
+  unsetup() {
+    super.unsetup();
+
+    this.$menus.off('click tap', '.weui-actionsheet__cell');
+    this.$actions.off('click tap', '.weui-actionsheet__cell');
+    this.$menus = null;
+    this.$actions = null;
+  }
+
 }
 
-export default actionSheet;
+export default ActionSheet;

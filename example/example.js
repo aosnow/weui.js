@@ -40,46 +40,58 @@ document.querySelector('#loadingBtn').addEventListener('click', function() {
 
 /* actionSheet */
 document.querySelector('#actionSheetBtn').addEventListener('click', function() {
-  weui.actionSheet([
-    {
-      label: '拍照',
-      onClick: function() {
-        console.log('拍照');
+  const asheet = weui.actionSheet({
+    // title: '',
+    // menus: [
+    //   {
+    //     label: '<i class="weui-icon-success weui-icon_msg"></i>',
+    //     handler: function() {
+    //       asheet.freeze();
+    //       return new Promise(resolve => {
+    //         setTimeout(() => {
+    //           console.log('客服电话');
+    //           asheet.freeze(false);
+    //           resolve();
+    //         }, 2000);
+    //       });
+    //     }
+    //   }
+    // ],
+    title: '请选择需要的操作',
+    menus: [
+      {
+        label: '确定',
+        handler: function() {
+          console.log('确定');
+        }
+      },
+      {
+        label: '取消',
+        handler: function() {
+          console.log('取消');
+        }
       }
-    }, {
-      label: '从相册选择',
-      onClick: function() {
-        console.log('从相册选择');
+    ],
+    actions: [
+      {
+        label: '取消',
+        handler: function() {
+          console.log('取消');
+        }
       }
-    }, {
-      label: '其他',
-      onClick: function() {
-        console.log('其他');
-      }
-    }
-  ], [
-    {
-      label: '取消',
-      onClick: function() {
-        console.log('取消');
-      }
-    }
-  ], {
-    title: 'actionTitle',
-    className: 'custom-classname',
-    onClose: function() {
-      console.log('关闭');
-    }
+    ]
   });
+  asheet.open();
 });
 
 /* topTips */
 document.querySelector('#topTipsBtn').addEventListener('click', function() {
   weui.topTips('请填写正确的字段', {
-    duration: 3000,
-    className: 'custom-classname',
-    callback: function() {
+    duration: 2500,
+    type: 'error',
+    close: function() {
       console.log('close');
+      weui.topTips('toptips 已经关闭');
     }
   });
 });
@@ -94,7 +106,7 @@ document.querySelector('#halfScreenBtn').addEventListener('click', function() {
   half.show();
 });
 
-/* SimplePicker */
+/* OptionPicker */
 // 简化的 Picker，适用于选项较少时收缩占用空间
 document.querySelector('#optionPickerBtn').addEventListener('click', function() {
   weui.optionPicker({
@@ -547,6 +559,35 @@ document.querySelector('#uploaderCustomFiles').addEventListener('click', functio
       });
     }
   });
+});
+
+// infinite-scroll
+let curIndex = 0;
+const scroller = weui.infiniteScroll({
+  target: '.weui-infinite-test',
+  stater: '.weui-infinite__state',
+  load() {
+    console.warn('load start...');
+    return new Promise(resolve => {
+      setTimeout(() => {
+        console.warn('load completed...');
+
+        curIndex += 10;
+        const target = document.querySelector('.weui-infinite__list');
+
+        for (let i = curIndex - 10; i < curIndex; i++) {
+          const el = document.createElement('div');
+          el.setAttribute('style', 'height:60px;line-height:60px;border-bottom:1px solid #ccc;text-align:center');
+          el.innerHTML = `<span>${i}</span>`;
+          target.append(el);
+        }
+
+        if (curIndex >= 29) scroller.nodata();
+
+        resolve();
+      }, 3000);
+    });
+  }
 });
 
 // 支持免刷新页面热更新

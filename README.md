@@ -12,7 +12,14 @@
 
 ### 计划
 - [ ] 使用 scss 语法全部替换 less，增强 css 预处理能力
-- [x] 新组件：半屏弹框
+- [ ] 使用新 ES6 class 架构重构简化所有组件
+- [ ] 所有组件回调风格去除 onClick 类似驼峰法，替换成 handler
+- [x] 新组件：半屏弹框 half-screen
+- [x] 新组件：无限滚动 infinite-scroll
+- [x] 新组件：选项拾取器 option-picker（实现单选、多选）
+- [x] 新组件：重写 action-sheet（支持自定义操作区内容，如插入客服图标）
+- [x] 新组件：重写 slider 组件，支持更多自由配置参数
+- [x] 新组件：重写 toptips
 - [x] 使用 zepto 替代内部 balajs 库，并转换到外部依赖，由用户自行控制
 
 

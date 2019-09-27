@@ -36,7 +36,7 @@ function _guid(pre, uid) {
  * @param {string} [options.title] 窗口标题
  * @param {string} [options.container] 指定窗口被添加到目标容器的 selector
  * @param {string} [options.className] 自定义窗口样式类名
- * @param {string|object} [options.content] 窗口主体内容的 selector；当类型为 object 时，可指定 {html:'',content:''}
+ * @param {string|object} [options.content] 窗口主体内容的 selector，或者 html 内容
  * @param {function} [options.close] 窗口关闭时的回调方法
  * @return {halfScreen}
  *
@@ -58,12 +58,10 @@ function _guid(pre, uid) {
  *
  * // 自定义 html
  * const half = weui.halfScreen({
- *    content: {
- *      html:`<div>
- *        <h2>标题</h2>
- *        <p>窗口内容</p>
- *      </div>`
- *    }
+ *    content: `<div>
+ *      <h2>标题</h2>
+ *      <p>窗口内容</p>
+ *    </div>`
  * });
  * half.show();
  */
