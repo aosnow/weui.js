@@ -1,19 +1,30 @@
 <a name="topTips"></a>
 
-## topTips(content, options)
-toptips 顶部报错提示
+## topTips(...options) ⇒ <code>TopTips</code>
+顶部 tips 消息弹出层
 
 **Kind**: global function  
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| content | <code>string</code> |  | 报错的文字 |
-| options | <code>number</code> &#124; <code>function</code> &#124; <code>object</code> |  | 多少毫秒后消失|消失后的回调|配置项 |
-| [options.duration] | <code>number</code> | <code>3000</code> | 多少毫秒后消失 |
-| [options.className] | <code>string</code> |  | 自定义类名 |
-| [options.callback] | <code>function</code> |  | 消失后的回调 |
+| Param | Type | Description |
+| --- | --- | --- |
+| ...options |  | 配置项 |
+| [options.type] | <code>string</code> | 主题（可选：'success'/'warn'/'error'，默认：'error'） |
+| options.content | <code>string</code> | tips 显示内容 |
+| [options.duration] | <code>number</code> | 自动关闭等待时间（默认：2500） |
+| [options.showClose] | <code>boolean</code> | 是否显示关闭按钮（默认：false） |
+| [options.container] | <code>string</code> | 实例化时被添加到的目标元素的选择器描述（默认：'body'） |
+| [options.className] | <code>string</code> | 自定义类名 |
+| [options.close] | <code>function</code> | actionSheet关闭后的回调 |
 
 **Example**  
-```js
-weui.topTips('请填写正确的字段');weui.topTips('请填写正确的字段', 3000);weui.topTips('请填写正确的字段', function(){ console.log('close') });weui.topTips('请填写正确的字段', {    duration: 3000,    className: 'custom-classname',    callback: function(){ console.log('close') }});// 主动关闭const $topTips = weui.topTips('请填写正确的字段');$topTips.hide(function() {     console.log('`topTips` has been hidden');});
+### 常规用法
+```javascript
+weui.topTips('请填写正确的字段'); // 默认 2500ms 后自动关闭
+weui.topTips('请填写正确的字段', {
+  duration: 2500,
+  type: 'success',
+  close: function() {
+    console.log('close');
+  }
+});
 ```
