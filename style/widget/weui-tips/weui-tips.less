@@ -1,0 +1,52 @@
+// ------------------------------------------------------------------------------
+// name: weui-tips
+// author: mudas( mschool.tech )
+// created: 2019/9/25
+// ------------------------------------------------------------------------------
+@import "../../base/fn";
+
+.weui-toptips__wrapper {
+
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: @dialog-index;
+  display: flex;
+
+  &.warn {
+    background-color: rgba(@weuiColorWarn, 0.95);
+  }
+
+  &.success {
+    background-color: rgba(@weuiColorSuccess, 0.95);
+  }
+
+  &.error {
+    background-color: rgba(@weuiColorError, 0.95);
+  }
+
+  .weui-toptips {
+    flex: 1;
+    padding: 5px;
+    font-size: 14px;
+    text-align: center;
+    .text_wrap();
+  }
+
+  .icon-wrapper {
+    flex: 0 0 10%;
+    display: flex;
+
+    > [class^=weui-icon] {
+      margin: auto;
+      color: rgba(255, 255, 255, 0.5);
+
+      &:hover {
+        color: rgba(255, 255, 255, 1);
+      }
+    }
+  }
+
+}

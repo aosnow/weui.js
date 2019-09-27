@@ -26,7 +26,7 @@ class ActionSheet extends SlideDialog {
   // --------------------------------------------------------------------------
 
   constructor(options) {
-    super($.extend(true, ActionSheet.DefaultOptions, options), TplSheet);
+    super($.extend(true, {}, ActionSheet.DefaultOptions, options), TplSheet);
   }
 
   // --------------------------------------------------------------------------

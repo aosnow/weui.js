@@ -1,0 +1,33 @@
+// ------------------------------------------------------------------------------
+// name: weui-drop
+// author: mudas( mschool.tech )
+// created: 2019/9/26
+// ------------------------------------------------------------------------------
+
+@keyframes dropUp {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+.weui-animate-drop-up {
+  animation: dropUp ease .2s forwards;
+}
+
+@keyframes dropDown {
+  from {
+    transform: translate3d(0, -100%, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.weui-animate-drop-down {
+  animation: dropDown ease .2s forwards;
+}

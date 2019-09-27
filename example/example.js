@@ -87,10 +87,11 @@ document.querySelector('#actionSheetBtn').addEventListener('click', function() {
 /* topTips */
 document.querySelector('#topTipsBtn').addEventListener('click', function() {
   weui.topTips('请填写正确的字段', {
-    duration: 3000,
-    className: 'custom-classname',
-    callback: function() {
+    duration: 2500,
+    type: 'error',
+    close: function() {
       console.log('close');
+      weui.topTips('toptips 已经关闭');
     }
   });
 });
@@ -105,7 +106,7 @@ document.querySelector('#halfScreenBtn').addEventListener('click', function() {
   half.show();
 });
 
-/* SimplePicker */
+/* OptionPicker */
 // 简化的 Picker，适用于选项较少时收缩占用空间
 document.querySelector('#optionPickerBtn').addEventListener('click', function() {
   weui.optionPicker({

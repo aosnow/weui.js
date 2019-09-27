@@ -10,7 +10,6 @@ const loaders = require('./loaders');
 // report plugin
 const report = process.env.REPORT === 'true';
 
-// TODO: 升级到 webpack v4.39.x 加强热调试（目前无法热更新调试，参照 member-h5）
 const BaseConfig = {
   mode: utils.DEBUG ? 'development' : 'production',
   context: utils.resolve('example'),

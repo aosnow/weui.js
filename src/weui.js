@@ -4,7 +4,7 @@ import confirm from './confirm/confirm';
 import toast from './toast/toast';
 import loading from './loading/loading';
 import actionSheet from './action-sheet';
-import topTips from './top-tips/top-tips';
+import topTips from './top-tips';
 import searchBar from './search-bar/search-bar';
 import tab from './tab/tab';
 import * as form from './form/form';

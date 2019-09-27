@@ -30,7 +30,7 @@ class SlideDialog {
 
   constructor(options, template = '') {
     // deep merge
-    this.options = $.extend(true, SlideDialog.DefaultOptions, options);
+    this.options = $.extend(true, {}, SlideDialog.DefaultOptions, options);
     this.init(template);
   }
 
@@ -127,6 +127,12 @@ class SlideDialog {
     this.$mask = this.$wrapper.find(mask.selector);
     this.$freeze = this.$wrapper.find(freeze.selector);
     this.$dialog = this.$wrapper.find(dialog.selector);
+
+    // 处理 $dialog 与 $wrapper 相同的情况（某些情况下特殊需要，要求对根容器施以动画控制）
+    if (this.$dialog.size() === 0 && this.$wrapper.is(dialog.selector)) {
+      this.$dialog = this.$wrapper;
+    }
+
     this.$freeze.hide();
     this.setup();
   }
